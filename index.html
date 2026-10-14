@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10101c">
+<title>لازم تغيّر صوتك</title>
+
+<style>
+:root {
+  --bg: #10101c;
+  --card: #1b1b2c;
+  --primary: #7c5cff;
+  --secondary: #00dfb0;
+  --text: #f4f4ff;
+  --muted: #a7a7c2;
+  --danger: #ff4d70;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top right, #292052 0, transparent 35%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--primary), #bd55ff);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 15px;
+  font-size: 35px;
+  box-shadow: 0 8px 35px #7c5cff55;
+}
+
+h1 {
+  margin: 0;
+  font-size: 27px;
+}
+
+header p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 0 15px 40px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid #ffffff12;
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 17px;
+  box-shadow: 0 10px 30px #0002;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 19px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  margin-bottom: 17px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #777;
+}
+
+.dot.active {
+  background: var(--secondary);
+  box-shadow: 0 0 12px var(--secondary);
+}
+
+button, select {
+  font: inherit;
+  border: none;
+  border-radius: 13px;
+  padding: 13px 15px;
+}
+
+button {
+  cursor: pointer;
+  color: white;
+  background: #303049;
+  transition: .2s;
+}
+
+button:hover {
+  filter: brightness(1.15);
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--primary), #a04fff);
+}
+
+.success {
+  background: #087e68;
+}
+
+.danger {
+  background: #922b46;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.controls button {
+  flex: 1;
+  min-width: 125px;
+}
+
+.effects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.effect {
+  border: 1px solid #ffffff15;
+  border-radius: 15px;
+  padding: 15px 10px;
+  background: #24243a;
+  text-align: center;
+  cursor: pointer;
+  min-height: 85px;
+}
+
+.effect span {
+  display: block;
+  font-size: 25px;
+  margin-bottom: 7px;
+}
+
+.effect small {
+  color: var(--muted);
+}
+
+.effect.selected {
+  border: 2px solid var(--secondary);
+  background: #12372f;
+}
+
+label {
+  display: block;
+  margin: 18px 0 10px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--secondary);
+}
+
+.value {
+  color: var(--secondary);
+  font-weight: bold;
+}
+
+.meter {
+  width: 100%;
+  height: 9px;
+  border-radius: 20px;
+  background: #303049;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  transition: width .08s;
+}
+
+.recording-item {
+  background: #25253b;
+  border-radius: 13px;
+  padding: 13px;
+  margin-top: 12px;
+}
+
+.recording-item audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.recording-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.recording-actions button {
+  flex: 1;
+}
+
+.notice {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.ad-space {
+  min-height: 75px;
+  border: 1px dashed #565675;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  margin-bottom: 17px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 20px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (min-width: 650px) {
+  .effects {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎙️</div>
+  <h1>لازم تغيّر صوتك</h1>
+  <p>غيّر المؤثرات الصوتية وسجّل صوتك بسهولة</p>
+</header>
+
+<main class="container">
+
+  <section class="card">
+    <h2>🎧 لوحة التحكم</h2>
+
+    <div class="status">
+      <div id="statusDot" class="dot"></div>
+      <span id="statusText">الميكروفون متوقف</span>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" class="primary">🎙️ تشغيل الميكروفون</button>
+      <button id="stopBtn" class="danger" disabled>⏹️ إيقاف</button>
+    </div>
+
+    <div class="meter">
+      <div id="meterFill" class="meter-fill"></div>
+    </div>
+
+    <p class="notice">
+      اسمح للموقع باستخدام الميكروفون عندما يطلب المتصفح ذلك.
+      لا تستخدم السماعات بصوت مرتفع لتجنب الصدى.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>🎭 اختر مؤثر الصوت</h2>
+
+    <div class="effects">
+      <button class="effect selected" data-effect="normal">
+        <span>🎤</span>
+        طبيعي
+        <small>الصوت الأصلي</small>
+      </button>
+
+      <button class="effect" data-effect="robot">
+        <span>🤖</span>
+        روبوت
+        <small>صوت آلي</small>
+      </button>
+
+      <button class="effect" data-effect="echo">
+        <span>🏔️</span>
+        صدى
+        <small>تكرار الصوت</small>
+      </button>
+
+      <button class="effect" data-effect="radio">
+        <span>📻</span>
+        راديو
+        <small>نغمة ضيقة</small>
+      </button>
+
+      <button class="effect" data-effect="deep">
+        <span>👹</span>
+        عميق
+        <small>خفض الترددات العالية</small>
+      </button>
+
+      <button class="effect" data-effect="space">
+        <span>👽</span>
+        فضائي
+        <small>تعديل آلي للصوت</small>
+      </button>
+
+      <button class="effect" data-effect="bright">
+        <span>✨</span>
+        واضح
+        <small>تعزيز الترددات</small>
+      </button>
+
+      <button class="effect" data-effect="distort">
+        <span>⚡</span>
+        مشوّه
+        <small>تشويه إلكتروني</small>
+      </button>
+    </div>
+
+    <label for="strength">
+      قوة التأثير:
+      <span id="strengthValue" class="value">50%</span>
+    </label>
+
+    <input id="strength" type="range" min="0" max="100" value="50">
+
+    <label for="volume">
+      مستوى الصوت:
+      <span id="volumeValue" class="value">80%</span>
+    </label>
+
+    <input id="volume" type="range" min="0" max="100" value="80">
+  </section>
+
+  <section class="card">
+    <h2>⏺️ تسجيل الصوت</h2>
+
+    <p id="recordText" class="notice">جاهز للتسجيل.</p>
+
+    <div class="controls">
+      <button id="recordBtn" class="success" disabled>🔴 بدء التسجيل</button>
+      <button id="finishRecordBtn" class="danger" disabled>⏹️ إنهاء التسجيل</button>
+    </div>
+
+    <p class="notice">
+      التسجيل يحفظ الصوت المعالج الناتج من المؤثر المختار،
+      وليس صوت الميكروفون الخام.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>💾 تسجيلاتي</h2>
+    <div id="recordings">
+      <p class="notice">لا توجد تسجيلات بعد.</p>
+    </div>
+  </section>
+
+  <div class="ad-space">
+    مساحة إعلانية<br>
+    <small>اربط شبكة إعلانات لعرض الإعلانات الحقيقية</small>
+  </div>
+
+  <section class="card">
+    <h2>ℹ️ معلومات التطبيق</h2>
+    <p class="notice">
+      هذا التطبيق يعالج الصوت داخل المتصفح.
+      قد تختلف جودة التأثيرات بحسب الجهاز والمتصفح.
+      تشغيل الميكروفون لا يغيّر صوت النظام داخل الألعاب أو التطبيقات الأخرى.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  لازم تغيّر صوتك © <span id="year"></span>
+</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const startBtn = $("startBtn");
+const stopBtn = $("stopBtn");
+const recordBtn = $("recordBtn");
+const finishRecordBtn = $("finishRecordBtn");
+const statusDot = $("statusDot");
+const statusText = $("statusText");
+const meterFill = $("meterFill");
+const strength = $("strength");
+const volume = $("volume");
+const recordingsEl = $("recordings");
+
+let audioContext = null;
+let mediaStream = null;
+let sourceNode = null;
+let analyser = null;
+let outputGain = null;
+let effectGain = null;
+let filterNode = null;
+let distortionNode = null;
+let delayNode = null;
+let delayFeedback = null;
+let delayMix = null;
+let dryGain = null;
+let wetGain = null;
+let mediaDestination = null;
+let recorder = null;
+let recordingChunks = [];
+let animationFrame = null;
+let currentEffect = "normal";
+let isRunning = false;
+let isRecording = false;
+let recordedItems = [];
+let audioGraphBuilt = false;
+
+$("year").textContent = new Date().getFullYear();
+
+function setStatus(message, active = false) {
+  statusText.textContent = message;
+  statusDot.classList.toggle("active", active);
+}
+
+function updateLabels() {
+  $("strengthValue").textContent = strength.value + "%";
+  $("volumeValue").textContent = volume.value + "%";
+
+  if (outputGain) {
+    outputGain.gain.setTargetAtTime(
+      Number(volume.value) / 100,
+      audioContext.currentTime,
+      0.02
+    );
+  }
+
+  applyEffect(currentEffect);
+}
+
+function makeDistortion(amount) {
+  const curve = new Float32Array(44100);
+
+  for (let i = 0; i < curve.length; i++) {
+    const x = (i * 2) / curve.length - 1;
+    curve[i] = ((3 + amount) * x * 20 * Math.PI / 180) /
+      (Math.PI + amount * Math.abs(x));
+  }
+
+  return curve;
+}
+
+function createAudioGraph() {
+  if (audioGraphBuilt) return;
+
+  sourceNode = audioContext.createMediaStreamSource(mediaStream);
+
+  analyser = audioContext.createAnalyser();
+  analyser.fftSize = 256;
+
+  outputGain = audioContext.createGain();
+  outputGain.gain.value = Number(volume.value) / 100;
+
+  effectGain = audioContext.createGain();
+
+  filterNode = audioContext.createBiquadFilter();
+  filterNode.type = "lowpass";
+  filterNode.frequency.value = 20000;
+
+  distortionNode = audioContext.createWaveShaper();
+  distortionNode.oversample = "4x";
+
+  delayNode = audioContext.createDelay(2);
+  delayNode.delayTime.value = 0.28;
+
+  delayFeedback = audioContext.createGain();
+  delayFeedback.gain.value = 0.25;
+
+  delayMix = audioContext.createGain();
+  delayMix.gain.value = 0;
+
+  dryGain = audioContext.createGain();
+  dryGain.gain.value = 1;
+
+  wetGain = audioContext.createGain();
+  wetGain.gain.value = 0;
+
+  mediaDestination = audioContext.createMediaStreamDestination();
+
+  sourceNode.connect(filterNode);
+  filterNode.connect(distortionNode);
+  distortionNode.connect(dryGain);
+  distortionNode.connect(delayNode);
+
+  delayNode.connect(delayFeedback);
+  delayFeedback.connect(delayNode);
+  delayNode.connect(wetGain);
+
+  dryGain.connect(outputGain);
+  wetGain.connect(outputGain);
+
+  outputGain.connect(analyser);
+  analyser.connect(audioContext.destination);
+  outputGain.connect(mediaDestination);
+
+  audioGraphBuilt = true;
+}
+
+function applyEffect(name) {
+  currentEffect = name;
+
+  if (!audioContext || !audioGraphBuilt) return;
+
+  const now = audioContext.currentTime;
+  const amount = Number(strength.value) / 100;
+
+  filterNode.type = "lowpass";
+  filterNode.frequency.setTargetAtTime(20000, now, 0.03);
+  filterNode.Q.setTargetAtTime(0.7, now, 0.03);
+
+  distortionNode.curve = null;
+  delayMix.gain.setTargetAtTime(0, now, 0.03);
+  dryGain.gain.setTargetAtTime(1, now, 0.03);
+  wetGain.gain.setTargetAtTime(0, now, 0.03);
+  delayFeedback.gain.setTargetAtTime(0.25, now, 0.03);
+
+  switch (name) {
+    case "normal":
+      break;
+
+    case "robot":
+      filterNode.type = "bandpass";
+      filterNode.frequency.setTargetAtTime(
+        700 + amount * 900, now, 0.03
+      );
+      filterNode.Q.setTargetAtTime(1.2 + amount * 4, now, 0.03);
+      distortionNode.curve = makeDistortion(8 + amount * 35);
+      break;
+
+    case "echo":
+      delayMix.gain.setTargetAtTime(0.35 + amount * 0.45, now, 0.03);
+      wetGain.gain.setTargetAtTime(0.35 + amount * 0.4, now, 0.03);
+      delayFeedback.gain.setTargetAtTime(0.2 + amount * 0.35, now, 0.03);
+      break;
+
+    case "radio":
+      filterNode.type = "bandpass";
+      filterNode.frequency.setTargetAtTime(1500, now, 0.03);
+      filterNode.Q.setTargetAtTime(0.8, now, 0.03);
+      distortionNode.curve = makeDistortion(3 + amount * 10);
+      break;
+
+    case "deep":
+      filterNode.type = "lowpass";
+      filterNode.frequency.setTargetAtTime(
+        2500 - amount * 1200, now, 0.03
+      );
+      break;
+
+    case "space":
+      filterNode.type = "bandpass";
+      filterNode.frequency.setTargetAtTime(
+        900 + Math.sin(Date.now() / 250) * 350 * amount,
+        now, 0.03
+      );
+      delayMix.gain.setTargetAtTime(0.15 + amount * 0.35, now, 0.03);
+      wetGain.gain.setTargetAtTime(0.15 + amount * 0.3, now, 0.03);
+      delayFeedback.gain.setTargetAtTime(0.25, now, 0.03);
+      break;
+
+    case "bright":
+      filterNode.type = "highpass";
+      filterNode.frequency.setTargetAtTime(200 + amount * 500, now, 0.03);
+      break;
+
+    case "distort":
+      distortionNode.curve = makeDistortion(15 + amount * 150);
+      break;
+  }
+
+  document.querySelectorAll(".effect").forEach(button => {
+    button.classList.toggle(
+      "selected",
+      button.dataset.effect === name
+    );
+  });
+}
+
+async function startMicrophone() {
+  if (isRunning) return;
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("المتصفح لا يدعم الميكروفون. افتح الموقع عبر HTTPS باستخدام متصفح حديث.");
+    return;
+  }
+
+  startBtn.disabled = true;
+  setStatus("جارٍ طلب إذن الميكروفون...");
+
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }
+    });
+
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    audioContext = new AudioContextClass();
+
+    await audioContext.resume();
+
+    createAudioGraph();
+    applyEffect(currentEffect);
+    updateLabels();
+
+    isRunning = true;
+
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    recordBtn.disabled = false;
+
+    setStatus("الميكروفون يعمل", true);
+    $("recordText").textContent = "جاهز للتسجيل.";
+
+    drawMeter();
+
+  } catch (error) {
+    console.error(error);
+
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+    }
+
+    mediaStream = null;
+    audioContext = null;
+    audioGraphBuilt = false;
+
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    recordBtn.disabled = true;
+
+    setStatus("تعذّر تشغيل الميكروفون");
+
+    alert(
+      "تعذّر تشغيل الميكروفون. تحقق من إذن المتصفح، " +
+      "وتأكد أن الموقع يعمل عبر HTTPS."
+    );
+  }
+}
+
+function drawMeter() {
+  if (!isRunning || !analyser) return;
+
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteTimeDomainData(data);
+
+  let sum = 0;
+
+  for (const value of data) {
+    const normalized = (value - 128) / 128;
+    sum += normalized * normalized;
+  }
+
+  const rms = Math.sqrt(sum / data.length);
+  const percent = Math.min(100, Math.round(rms * 250));
+
+  meterFill.style.width = percent + "%";
+
+  if (currentEffect === "space" && audioContext) {
+    applySpaceMovement();
+  }
+
+  animationFrame = requestAnimationFrame(drawMeter);
+}
+
+let lastSpaceUpdate = 0;
+
+function applySpaceMovement() {
+  const nowMs = Date.now();
+
+  if (nowMs - lastSpaceUpdate < 100) return;
+  lastSpaceUpdate = nowMs;
+
+  if (!filterNode || !audioContext) return;
+
+  const amount = Number(strength.value) / 100;
+  const frequency = 900 + Math.sin(nowMs / 250) * 350 * amount;
+
+  filterNode.frequency.setTargetAtTime(
+    Math.max(100, frequency),
+    audioContext.currentTime,
+    0.05
+  );
+}
+
+async function stopMicrophone() {
+  if (!isRunning) return;
+
+  if (isRecording) {
+    finishRecording();
+  }
+
+  isRunning = false;
+
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  }
+
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => track.stop());
+    mediaStream = null;
+  }
+
+  if (audioContext) {
+    try {
+      await audioContext.close();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  audioContext = null;
+  audioGraphBuilt = false;
+
+  sourceNode = null;
+  analyser = null;
+  outputGain = null;
+  filterNode = null;
+  distortionNode = null;
+  delayNode = null;
+  delayFeedback = null;
+  dryGain = null;
+  wetGain = null;
+  mediaDestination = null;
+
+  meterFill.style.width = "0%";
+
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  recordBtn.disabled = true;
+  finishRecordBtn.disabled = true;
+
+  setStatus("الميكروفون متوقف");
+}
+
+function startRecording() {
+  if (!isRunning || !mediaDestination || isRecording) return;
+
+  const stream = mediaDestination.stream;
+
+  const mimeType = [
+    "audio/webm;codecs=opus",
+    "audio/webm",
+    "audio/ogg;codecs=opus"
+  ].find(type => MediaRecorder.isTypeSupported(type));
+
+  try {
+    recorder = mimeType
+      ? new MediaRecorder(stream, { mimeType })
+      : new MediaRecorder(stream);
+
+    recordingChunks = [];
+
+    recorder.ondataavailable = event => {
+      if (event.data && event.data.size > 0) {
+        recordingChunks.push(event.data);
+      }
+    };
+
+    recorder.onerror = event => {
+      console.error(event);
+      $("recordText").textContent = "حدث خطأ أثناء التسجيل.";
+    };
+
+    recorder.onstop = saveRecording;
+
+    recorder.start(250);
+
+    isRecording = true;
+    recordBtn.disabled = true;
+    finishRecordBtn.disabled = false;
+
+    $("recordText").textContent = "🔴 جارٍ تسجيل الصوت المعالج...";
+
+  } catch (error) {
+    console.error(error);
+    alert("تعذّر بدء التسجيل على هذا المتصفح.");
+  }
+}
+
+function finishRecording() {
+  if (!recorder || !isRecording) return;
+
+  isRecording = false;
+
+  recordBtn.disabled = !isRunning;
+  finishRecordBtn.disabled = true;
+
+  $("recordText").textContent = "جارٍ تجهيز التسجيل...";
+
+  try {
+    recorder.stop();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function saveRecording() {
+  if (!recordingChunks.length) {
+    $("recordText").textContent = "التسجيل فارغ.";
+    return;
+  }
+
+  const type = recorder && recorder.mimeType
+    ? recorder.mimeType
+    : "audio/webm";
+
+  const blob = new Blob(recordingChunks, { type });
+
+  if (!blob.size) {
+    $("recordText").textContent = "فشل إنشاء التسجيل.";
+    return;
+  }
+
+  const extension = type.includes("ogg") ? "ogg" : "webm";
+  const url = URL.createObjectURL(blob);
+
+  const item = {
+    id: Date.now(),
+    url,
+    blob,
+    name: "recording_" + new Date().toISOString().replace(/[:.]/g, "-") + "." + extension,
+    effect: currentEffect,
+    size: blob.size
+  };
+
+  recordedItems.unshift(item);
+
+  renderRecordings();
+
+  $("recordText").textContent =
+    "تم حفظ التسجيل في قائمة تسجيلاتك داخل الصفحة.";
+
+  recordingChunks = [];
+}
+
+function renderRecordings() {
+  if (!recordedItems.length) {
+    recordingsEl.innerHTML =
+      '<p class="notice">لا توجد تسجيلات بعد.</p>';
+    return;
+  }
+
+  recordingsEl.replaceChildren();
+
+  recordedItems.forEach((item, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "recording-item";
+
+    const title = document.createElement("strong");
+    title.textContent = "تسجيل " + (index + 1);
+
+    const info = document.createElement("p");
+    info.className = "notice";
+    info.textContent =
+      "المؤثر: " + effectName(item.effect) +
+      " • الحجم: " + formatBytes(item.size);
+
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.src = item.url;
+
+    const actions = document.createElement("div");
+    actions.className = "recording-actions";
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.className = "primary";
+    downloadBtn.textContent = "⬇️ تنزيل";
+
+    downloadBtn.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.href = item.url;
+      link.download = item.name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "danger";
+    deleteBtn.textContent = "🗑️ حذف";
+
+    deleteBtn.addEventListener("click", () => {
+      URL.revokeObjectURL(item.url);
+      recordedItems = recordedItems.filter(record => record.id !== item.id);
+      renderRecordings();
+    });
+
+    actions.append(downloadBtn, deleteBtn);
+    wrapper.append(title, info, audio, actions);
+
+    recordingsEl.appendChild(wrapper);
+  });
+}
+
+function effectName(name) {
+  const names = {
+    normal: "طبيعي",
+    robot: "روبوت",
+    echo: "صدى",
+    radio: "راديو",
+    deep: "عميق",
+    space: "فضائي",
+    bright: "واضح",
+    distort: "مشوّه"
+  };
+
+  return names[name] || name;
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + " بايت";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+document.querySelectorAll(".effect").forEach(button => {
+  button.addEventListener("click", () => {
+    applyEffect(button.dataset.effect);
+  });
+});
+
+strength.addEventListener("input", updateLabels);
+volume.addEventListener("input", updateLabels);
+
+startBtn.addEventListener("click", startMicrophone);
+stopBtn.addEventListener("click", stopMicrophone);
+recordBtn.addEventListener("click", startRecording);
+finishRecordBtn.addEventListener("click", finishRecording);
+
+window.addEventListener("beforeunload", () => {
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => track.stop());
+  }
+
+  recordedItems.forEach(item => URL.revokeObjectURL(item.url));
+});
+
+if (!window.MediaRecorder) {
+  recordBtn.disabled = true;
+  $("recordText").textContent =
+    "التسجيل غير مدعوم في هذا المتصفح. جرّب متصفحاً حديثاً.";
+}
+
+updateLabels();
+</script>
+
+</body>
+</html>
