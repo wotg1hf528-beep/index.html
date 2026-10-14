@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101020">
+<title>Voice Changer Pro</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0c0c18;
+    color:#f5f5ff;
+}
+.container{max-width:850px;margin:auto;padding:20px 14px 40px}
+header{text-align:center;padding:25px 0}
+.logo{
+    font-size:42px;
+    width:80px;height:80px;
+    display:grid;place-items:center;
+    margin:auto;
+    border-radius:24px;
+    background:linear-gradient(135deg,#8055ff,#21c5ee)
+}
+h1{font-size:30px;margin:18px 0 8px}
+header p,.muted{color:#a7a7c5;line-height:1.8}
+.card{
+    background:#17172a;
+    border:1px solid #30304d;
+    border-radius:18px;
+    padding:19px;
+    margin:16px 0
+}
+h2{font-size:19px;margin-top:0}
+.buttons{
+    display:flex;flex-wrap:wrap;
+    gap:10px;margin-top:15px
+}
+button{
+    border:0;border-radius:12px;
+    padding:13px;
+    color:white;background:#30304b;
+    cursor:pointer;font-size:14px
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:#7354ee}
+.green{background:#167b61}
+.red{background:#a62f4b}
+.buttons button{flex:1;min-width:135px}
+.status{
+    padding:13px;
+    background:#222239;
+    border-radius:12px;
+    line-height:1.8;
+    overflow-wrap:anywhere
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px
+}
+.effect{
+    text-align:right;
+    background:#202039;
+    border:1px solid #393957;
+    line-height:1.7
+}
+.effect.selected{
+    border-color:#9d84ff;
+    background:#342b55
+}
+.effect span{display:block;font-size:25px}
+.control{margin:22px 0}
+.control label{display:block;margin-bottom:10px}
+input[type=range]{width:100%;accent-color:#9175ff}
+.value{color:#c4b4ff;direction:ltr;display:inline-block}
+audio{width:100%;margin-top:12px}
+.recording{
+    background:#222239;
+    padding:14px;
+    border-radius:12px;
+    margin-top:12px
+}
+.download{
+    display:inline-block;
+    color:#c5b6ff;
+    margin-top:10px
+}
+.notice{
+    font-size:13px;
+    color:#c7c5e9;
+    line-height:1.9;
+    background:#25213b;
+    padding:14px;border-radius:12px
+}
+@media(min-width:600px){
+    .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <div class="logo">🎙️</div>
+    <h1>Voice Changer Pro</h1>
+    <p>إدارة أذونات الميكروفون وتجربة المؤثرات الصوتية.</p>
+</header>
+
+<section class="card">
+    <h2>🔐 أذونات الميكروفون</h2>
+
+    <div id="permissionStatus" class="status">
+        جارٍ فحص حالة المتصفح...
+    </div>
+
+    <div class="buttons">
+        <button class="primary" id="requestPermission">
+            طلب إذن الميكروفون
+        </button>
+
+        <button id="checkPermission">
+            فحص الأذونات
+        </button>
+
+        <button id="openSettings">
+            تعليمات إعدادات الموقع
+        </button>
+    </div>
+
+    <p class="muted">
+        المتصفح هو الذي يعرض نافذة الإذن. لا تستطيع صفحة HTML
+        تجاوز رفض المستخدم أو تشغيل الميكروفون دون موافقته.
+    </p>
+</section>
+
+<section class="card">
+    <h2>🎧 تشغيل الصوت</h2>
+
+    <div id="audioStatus" class="status">
+        الميكروفون متوقف.
+    </div>
+
+    <div class="buttons">
+        <button class="primary" id="startBtn">
+            تشغيل الميكروفون
+        </button>
+
+        <button class="red" id="stopBtn" disabled>
+            إيقاف الميكروفون
+        </button>
+
+        <button class="green" id="monitorBtn" disabled>
+            تشغيل السماع المباشر
+        </button>
+    </div>
+
+    <p class="muted">
+        استخدم سماعات الأذن عند تفعيل السماع المباشر لتقليل
+        الصدى والصوت المرتد.
+    </p>
+</section>
+
+<section class="card">
+    <h2>🎭 المؤثرات الصوتية</h2>
+
+    <div class="grid">
+        <button class="effect selected" data-effect="normal">
+            <span>🎙️</span>صوت طبيعي
+        </button>
+
+        <button class="effect" data-effect="robot">
+            <span>🤖</span>روبوت
+        </button>
+
+        <button class="effect" data-effect="deep">
+            <span>👹</span>صوت عميق
+        </button>
+
+        <button class="effect" data-effect="space">
+            <span>👽</span>فضائي
+        </button>
+
+        <button class="effect" data-effect="echo">
+            <span>🔊</span>صدى
+        </button>
+
+        <button class="effect" data-effect="high">
+            <span>🐿️</span>صوت مرتفع
+        </button>
+    </div>
+
+    <div class="control">
+        <label>
+            مستوى الصوت:
+            <span id="volumeValue" class="value">80%</span>
+        </label>
+        <input id="volume" type="range"
+               min="0" max="1" step="0.05" value="0.8">
+    </div>
+
+    <div class="control">
+        <label>
+            شدة الصدى:
+            <span id="echoValue" class="value">20%</span>
+        </label>
+        <input id="echo" type="range"
+               min="0" max="0.8" step="0.05" value="0.2">
+    </div>
+</section>
+
+<section class="card">
+    <h2>⏺️ التسجيل</h2>
+
+    <div id="timer" class="status" style="text-align:center">
+        00:00
+    </div>
+
+    <div class="buttons">
+        <button class="primary" id="recordBtn" disabled>
+            بدء التسجيل
+        </button>
+
+        <button class="red" id="finishBtn" disabled>
+            إنهاء التسجيل
+        </button>
+    </div>
+
+    <div id="recordings"></div>
+</section>
+
+<section class="card">
+    <h2>🛠️ فحوصات إضافية</h2>
+
+    <div id="diagnostics" class="status">
+        لم يبدأ الفحص بعد.
+    </div>
+
+    <div class="buttons">
+        <button id="diagnoseBtn">فحص الجهاز والمتصفح</button>
+        <button id="retryBtn">إعادة المحاولة</button>
+    </div>
+</section>
+
+<div class="notice">
+    <strong>معلومات مهمة:</strong><br>
+    1. إذا كانت الصفحة مفتوحة عبر file:// فقد يمنع المتصفح الوصول
+    إلى الميكروفون. استخدم HTTPS أو localhost.<br>
+    2. إذا رفضت الإذن سابقاً، افتح إعدادات الموقع من المتصفح
+    وغيّر إذن الميكروفون إلى السماح.<br>
+    3. إذا كان الميكروفون مستخدماً من تطبيق آخر أو غير متصل،
+    فقد يفشل التشغيل.<br>
+    4. صفحة HTML لا تستطيع إضافة أذونات نظام Android بنفسها،
+    ولا تستطيع إجبار لعبة أخرى على استخدام الصوت المعدّل.<br>
+    5. لا يوجد إذن إضافي عام يسمح لموقع ويب باستبدال ميكروفون
+    النظام داخل التطبيقات الأخرى.
+</div>
+
+</div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+let stream = null;
+let ctx = null;
+let source = null;
+let filter = null;
+let dry = null;
+let delay = null;
+let wet = null;
+let feedback = null;
+let master = null;
+let destination = null;
+let recorder = null;
+let chunks = [];
+let timerInterval = null;
+let recordingStart = 0;
+let effect = "normal";
+let monitoring = false;
+
+function permissionMessage(message) {
+    $("permissionStatus").textContent = message;
+}
+
+function audioMessage(message) {
+    $("audioStatus").textContent = message;
+}
+
+function secureCheck() {
+    return window.isSecureContext ||
+           location.hostname === "localhost" ||
+           location.hostname === "127.0.0.1";
+}
+
+async function checkPermission() {
+    const details = [];
+
+    details.push(
+        "الاتصال الآمن: " +
+        (secureCheck() ? "متاح" : "غير متاح")
+    );
+
+    details.push(
+        "دعم getUserMedia: " +
+        (navigator.mediaDevices &&
+         navigator.mediaDevices.getUserMedia
+            ? "متاح" : "غير متاح")
+    );
+
+    if (navigator.permissions &&
+        navigator.permissions.query) {
+        try {
+            const result = await navigator.permissions.query({
+                name: "microphone"
+            });
+            details.push("حالة الإذن: " + result.state);
+        } catch (_) {
+            details.push(
+                "حالة الإذن: لا يمكن قراءتها من هذا المتصفح"
+            );
+        }
+    } else {
+        details.push(
+            "حالة الإذن: المتصفح لا يوفر فحصاً مباشراً"
+        );
+    }
+
+    permissionMessage(details.join("\n"));
+}
+
+async function requestPermission() {
+    if (!secureCheck()) {
+        permissionMessage(
+            "الصفحة ليست ضمن اتصال آمن. افتحها عبر HTTPS " +
+            "أو localhost ثم أعد المحاولة."
+        );
+        return;
+    }
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+        permissionMessage(
+            "المتصفح لا يوفّر واجهة الميكروفون. جرّب فتح " +
+            "الصفحة في Chrome أو متصفح حديث."
+        );
+        return;
+    }
+
+    try {
+        permissionMessage("يرجى الموافقة على إذن الميكروفون...");
+
+        const testStream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+        testStream.getTracks().forEach(track => track.stop());
+
+        permissionMessage(
+            "تم منح الإذن. اضغط تشغيل الميكروفون."
+        );
+    } catch (error) {
+        permissionMessage(describeError(error));
+    }
+}
+
+function describeError(error) {
+    const name = error && error.name;
+    const extra = error && error.message
+        ? "\nالتفاصيل: " + error.message : "";
+
+    const messages = {
+        NotAllowedError:
+            "تم رفض الإذن أو أن المتصفح يمنع الميكروفون. " +
+            "افتح إعدادات الموقع واسمح باستخدام الميكروفون.",
+
+        PermissionDeniedError:
+            "إذن الميكروفون مرفوض. غيّر إعدادات الموقع إلى السماح.",
+
+        NotFoundError:
+            "لم يتم العثور على ميكروفون متاح.",
+
+        DevicesNotFoundError:
+            "لم يتم العثور على جهاز إدخال صوت.",
+
+        NotReadableError:
+            "الميكروفون غير متاح أو تستخدمه عملية أخرى. " +
+            "أغلق التطبيقات التي تستخدمه وأعد المحاولة.",
+
+        TrackStartError:
+            "تعذر تشغيل الميكروفون. افحص الجهاز وأذوناته.",
+
+        OverconstrainedError:
+            "إعدادات الميكروفون المطلوبة غير مدعومة.",
+
+        SecurityError:
+            "الوصول محظور لأسباب أمنية. استخدم HTTPS.",
+
+        AbortError:
+            "أوقف النظام عملية تشغيل الميكروفون. أعد المحاولة."
+    };
+
+    return (messages[name] ||
+        "تعذر الوصول إلى الميكروفون. تحقق من الأذونات والجهاز.") +
+        extra;
+}
+
+async function startMicrophone() {
+    if (stream) return;
+
+    if (!secureCheck()) {
+        audioMessage(
+            "افتح الصفحة عبر HTTPS أو localhost لتشغيل الميكروفون."
+        );
+        return;
+    }
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+        audioMessage(
+            "الوصول إلى الميكروفون غير مدعوم في سياق الصفحة الحالي."
+        );
+        return;
+    }
+
+    $("startBtn").disabled = true;
+    audioMessage("جارٍ تشغيل الميكروفون...");
+
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false
+            }
+        });
+
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+            throw new Error("Web Audio API غير مدعوم.");
+        }
+
+        ctx = new AudioContextClass();
+        await ctx.resume();
+
+        source = ctx.createMediaStreamSource(stream);
+
+        filter = ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 18000;
+
+        dry = ctx.createGain();
+        delay = ctx.createDelay(2);
+        delay.delayTime.value = 0.3;
+
+        wet = ctx.createGain();
+        feedback = ctx.createGain();
+        feedback.gain.value = 0.1;
+
+        master = ctx.createGain();
+        master.gain.value = 0;
+
+        source.connect(filter);
+        filter.connect(dry);
+        dry.connect(master);
+
+        source.connect(delay);
+        delay.connect(wet);
+        wet.connect(master);
+
+        delay.connect(feedback);
+        feedback.connect(delay);
+
+        destination = ctx.createMediaStreamDestination();
+        master.connect(destination);
+
+        const speakers = ctx.createGain();
+        speakers.gain.value = 1;
+        master.connect(speakers);
+        speakers.connect(ctx.destination);
+
+        // الاحتفاظ بمسار السماع للتحكم به بصورة مستقلة.
+        window._voiceSpeakers = speakers;
+
+        applyEffect();
+
+        $("stopBtn").disabled = false;
+        $("monitorBtn").disabled = false;
+        $("recordBtn").disabled = false;
+
+        audioMessage("الميكروفون يعمل بنجاح.");
+        await checkPermission();
+
+    } catch (error) {
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+        }
+
+        stream = null;
+
+        if (ctx) {
+            try { await ctx.close(); } catch (_) {}
+        }
+
+        ctx = null;
+        $("startBtn").disabled = false;
+        audioMessage(describeError(error));
+    }
+}
+
+function applyEffect() {
+    if (!ctx || !filter) return;
+
+    const volume = Number($("volume").value);
+    const echo = Number($("echo").value);
+    const now = ctx.currentTime;
+
+    filter.type = "lowpass";
+    filter.frequency.value = 18000;
+    filter.Q.value = 0.7;
+
+    dry.gain.setTargetAtTime(1, now, 0.02);
+    wet.gain.setTargetAtTime(echo, now, 0.02);
+    feedback.gain.setTargetAtTime(
+        Math.min(echo * 0.4, 0.3), now, 0.02
+    );
+
+    switch (effect) {
+        case "normal":
+            wet.gain.setTargetAtTime(0, now, 0.02);
+            break;
+
+        case "robot":
+            filter.type = "bandpass";
+            filter.frequency.value = 1300;
+            filter.Q.value = 1;
+            wet.gain.setTargetAtTime(0.05, now, 0.02);
+            break;
+
+        case "deep":
+            filter.frequency.value = 850;
+            break;
+
+        case "space":
+            filter.type = "bandpass";
+            filter.frequency.value = 1900;
+            wet.gain.setTargetAtTime(
+                Math.max(echo, 0.35), now, 0.02
+            );
+            break;
+
+        case "echo":
+            wet.gain.setTargetAtTime(
+                Math.max(echo, 0.45), now, 0.02
+            );
+            delay.delayTime.value = 0.4;
+            break;
+
+        case "high":
+            filter.type = "highpass";
+            filter.frequency.value = 500;
+            break;
+    }
+
+    if (window._voiceSpeakers) {
+        window._voiceSpeakers.gain.setTargetAtTime(
+            monitoring ? volume : 0, now, 0.02
+        );
+    }
+
+    // نتحكم بمستوى التسجيل أيضاً.
+    master.gain.setTargetAtTime(volume, now, 0.02);
+
+    $("volumeValue").textContent =
+        Math.round(volume * 100) + "%";
+
+    $("echoValue").textContent =
+        Math.round(echo * 100) + "%";
+}
+
+function toggleMonitor() {
+    monitoring = !monitoring;
+
+    $("monitorBtn").textContent = monitoring
+        ? "إيقاف السماع المباشر"
+        : "تشغيل السماع المباشر";
+
+    applyEffect();
+}
+
+function startRecording() {
+    if (!destination || !window.MediaRecorder) {
+        audioMessage("التسجيل غير مدعوم في هذا المتصفح.");
+        return;
+    }
+
+    try {
+        let options = {};
+
+        if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+            options.mimeType = "audio/webm;codecs=opus";
+        }
+
+        recorder = new MediaRecorder(destination.stream, options);
+        chunks = [];
+
+        recorder.ondataavailable = event => {
+            if (event.data && event.data.size) {
+                chunks.push(event.data);
+            }
+        };
+
+        recorder.onstop = saveRecording;
+        recorder.start();
+
+        recordingStart = Date.now();
+        timerInterval = setInterval(updateTimer, 250);
+
+        $("recordBtn").disabled = true;
+        $("finishBtn").disabled = false;
+
+        audioMessage("التسجيل جارٍ...");
+    } catch (error) {
+        audioMessage("تعذر بدء التسجيل: " + error.message);
+    }
+}
+
+function updateTimer() {
+    const seconds = Math.floor((Date.now() - recordingStart) / 1000);
+    $("timer").textContent =
+        String(Math.floor(seconds / 60)).padStart(2, "0") +
+        ":" +
+        String(seconds % 60).padStart(2, "0");
+}
+
+function stopRecording() {
+    if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
+    }
+
+    clearInterval(timerInterval);
+    $("finishBtn").disabled = true;
+    $("recordBtn").disabled = !stream;
+}
+
+function saveRecording() {
+    if (!chunks.length) {
+        audioMessage("لم يتم التقاط صوت في التسجيل.");
+        return;
+    }
+
+    const blob = new Blob(chunks, {
+        type: recorder.mimeType || "audio/webm"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const item = document.createElement("div");
+    item.className = "recording";
+
+    const title = document.createElement("strong");
+    title.textContent = "التسجيل " +
+        new Date().toLocaleTimeString("ar-IQ");
+
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = url;
+
+    const link = document.createElement("a");
+    link.className = "download";
+    link.href = url;
+    link.download = "voice-" + Date.now() + ".webm";
+    link.textContent = "تنزيل التسجيل";
+
+    item.append(title, audio, link);
+    $("recordings").prepend(item);
+
+    $("timer").textContent = "00:00";
+    audioMessage("اكتمل التسجيل ويمكن تنزيله.");
+}
+
+async function stopMicrophone() {
+    if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
+    }
+
+    clearInterval(timerInterval);
+
+    if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+    }
+
+    if (ctx) {
+        try { await ctx.close(); } catch (_) {}
+    }
+
+    stream = null;
+    ctx = null;
+    source = null;
+    filter = null;
+    dry = null;
+    delay = null;
+    wet = null;
+    feedback = null;
+    master = null;
+    destination = null;
+    monitoring = false;
+
+    window._voiceSpeakers = null;
+
+    $("startBtn").disabled = false;
+    $("stopBtn").disabled = true;
+    $("monitorBtn").disabled = true;
+    $("recordBtn").disabled = true;
+    $("finishBtn").disabled = true;
+
+    $("monitorBtn").textContent = "تشغيل السماع المباشر";
+
+    audioMessage("الميكروفون متوقف.");
+}
+
+async function diagnose() {
+    const lines = [];
+
+    lines.push("المتصفح: " + navigator.userAgent);
+    lines.push("اتصال آمن: " + (secureCheck() ? "نعم" : "لا"));
+    lines.push("MediaDevices: " +
+        (navigator.mediaDevices ? "متاح" : "غير متاح"));
+    lines.push("getUserMedia: " +
+        (navigator.mediaDevices &&
+         navigator.mediaDevices.getUserMedia ? "متاح" : "غير متاح"));
+    lines.push("MediaRecorder: " +
+        (window.MediaRecorder ? "متاح" : "غير متاح"));
+    lines.push("AudioContext: " +
+        ((window.AudioContext || window.webkitAudioContext)
+            ? "متاح" : "غير متاح"));
+
+    $("diagnostics").textContent = lines.join("\n");
+}
+
+$("requestPermission").addEventListener("click", requestPermission);
+$("checkPermission").addEventListener("click", checkPermission);
+$("startBtn").addEventListener("click", startMicrophone);
+$("stopBtn").addEventListener("click", stopMicrophone);
+$("monitorBtn").addEventListener("click", toggleMonitor);
+$("recordBtn").addEventListener("click", startRecording);
+$("finishBtn").addEventListener("click", stopRecording);
+$("diagnoseBtn").addEventListener("click", diagnose);
+
+$("retryBtn").addEventListener("click", async () => {
+    if (stream) await stopMicrophone();
+    await checkPermission();
+    await startMicrophone();
+});
+
+$("openSettings").addEventListener("click", () => {
+    alert(
+        "افتح إعدادات المتصفح ثم إعدادات الموقع، " +
+        "واختر الميكروفون ثم السماح.\n\n" +
+        "إذا كنت تستخدم تطبيقاً يفتح ملفات HTML مباشرة، " +
+        "جرّب فتح الصفحة عبر HTTPS أو localhost."
+    );
+});
+
+document.querySelectorAll(".effect").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".effect").forEach(b =>
+            b.classList.remove("selected")
+        );
+
+        button.classList.add("selected");
+        effect = button.dataset.effect;
+        applyEffect();
+    });
+});
+
+$("volume").addEventListener("input", applyEffect);
+$("echo").addEventListener("input", applyEffect);
+
+checkPermission();
+diagnose();
+</script>
+</body>
+  </html>
