@@ -2,646 +2,962 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b18">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d19">
 <title>لازم تغيّر صوتك</title>
+
 <style>
-:root{
- --bg:#090b18;--card:#13172b;--card2:#1b2039;
- --purple:#8b5cf6;--cyan:#22d3ee;--text:#f4f5ff;
- --muted:#a3aac6;--border:#303653;
+:root {
+  --bg: #090d19;
+  --panel: #111a2b;
+  --panel2: #17233a;
+  --border: #293954;
+  --primary: #9b70ff;
+  --cyan: #45e2f5;
+  --text: #f5f7ff;
+  --muted: #9eacc6;
+  --green: #3de5a0;
+  --red: #ff557a;
 }
-*{box-sizing:border-box}
-body{
- margin:0;background:radial-gradient(ellipse at top,#20204b,var(--bg) 65%);
- color:var(--text);font-family:system-ui,-apple-system,sans-serif;
- min-height:100vh
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top, #242044 0, transparent 48%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
 }
-header{text-align:center;padding:28px 14px 20px}
-.logo{
- width:76px;height:76px;margin:auto;border-radius:25px;
- display:grid;place-items:center;font-size:36px;
- background:linear-gradient(135deg,var(--purple),var(--cyan));
- box-shadow:0 8px 35px #8b5cf655
+
+button, input, select { font: inherit; }
+
+button { cursor: pointer; }
+
+header {
+  text-align: center;
+  padding: 32px 16px 22px;
 }
-h1{font-size:27px;margin:15px 0 6px}
-header p{color:var(--muted);margin:0;font-size:14px}
-main{max-width:900px;margin:auto;padding:12px}
-.card{
- background:linear-gradient(145deg,#171b31,#101326);
- border:1px solid var(--border);border-radius:20px;
- padding:18px;margin-bottom:16px
+
+.logo {
+  width: 82px;
+  height: 82px;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  box-shadow: 0 12px 40px #9b70ff44;
 }
-.section-title{font-size:17px;font-weight:800;margin:0 0 14px}
-.status{
- display:flex;align-items:center;gap:8px;color:var(--muted);
- font-size:13px;margin-bottom:14px
+
+h1 {
+  margin: 17px 0 7px;
+  font-size: 28px;
 }
-.dot{width:9px;height:9px;background:#64748b;border-radius:50%}
-.dot.active{background:#34d399;box-shadow:0 0 12px #34d399}
-.grid{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px
+
+header p {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
 }
-.voice{
- border:1px solid var(--border);background:var(--card2);
- color:var(--text);border-radius:14px;padding:13px 5px;
- cursor:pointer;min-height:91px;transition:.15s
+
+main {
+  max-width: 900px;
+  padding: 12px;
+  margin: auto;
 }
-.voice .icon{font-size:25px;display:block;margin-bottom:6px}
-.voice span:last-child{font-size:12px}
-.voice.selected{
- border-color:var(--cyan);
- background:linear-gradient(145deg,#29385b,#272047);
- box-shadow:0 0 0 1px #22d3ee33
+
+.card {
+  padding: 19px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: 21px;
+  background: linear-gradient(145deg, #151e31, #0f1626);
 }
-label{display:block;font-size:14px;margin-bottom:9px}
-.control{margin:20px 0}
-.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
-output{color:var(--cyan);font-size:13px}
-input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
-select,input[type=file]{
- width:100%;padding:12px;border-radius:12px;
- border:1px solid var(--border);background:var(--card2);color:var(--text)
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 16px;
 }
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{font:inherit}
-.btn{
- border:0;border-radius:13px;padding:13px 10px;cursor:pointer;
- font-weight:750;transition:.15s
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 18px;
 }
-.btn:active,.voice:active{transform:scale(.98)}
-.primary{background:linear-gradient(120deg,var(--purple),#6d5dfc);color:white}
-.secondary{background:#242a45;color:white;border:1px solid var(--border)}
-.danger{background:#4b2037;color:#ffc6d6;border:1px solid #78324e}
-.full{width:100%;margin-top:10px}
-audio{width:100%;margin-top:14px}
-.note{
- color:var(--muted);font-size:12px;line-height:1.8;
- margin:12px 0 0
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #718096;
 }
-.recording{
- background:#351d32;border:1px solid #8b3d67;
- border-radius:12px;padding:12px;text-align:center;
- margin-bottom:12px;font-size:13px
+
+.dot.on {
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
 }
-.recording[hidden]{display:none}
-.library-item{
- background:var(--card2);border:1px solid var(--border);
- border-radius:12px;padding:12px;margin-top:10px
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
 }
-.library-item strong{font-size:14px}
-.library-item audio{display:block}
-.library-actions{display:flex;gap:8px;margin-top:8px}
-.library-actions a,.library-actions button{
- flex:1;text-align:center;padding:9px;border-radius:9px;
- background:#303653;color:white;border:0;text-decoration:none;
- font-size:12px;cursor:pointer
+
+.voice {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 13px 5px;
+  color: var(--text);
+  min-height: 93px;
+  transition: .2s;
 }
-footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
-@media(max-width:600px){
- .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
- .card{padding:14px}
- h1{font-size:24px}
+
+.voice:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
-@media(max-width:350px){
- .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.voice.selected {
+  border-color: var(--cyan);
+  background: linear-gradient(145deg, #30305b, #1b3449);
+  box-shadow: 0 0 0 1px #45e2f522;
+}
+
+.voice .emoji {
+  display: block;
+  font-size: 27px;
+  margin-bottom: 7px;
+}
+
+.voice .name {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.control { margin: 22px 0; }
+
+.control:first-of-type { margin-top: 8px; }
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+output {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 700;
+  direction: ltr;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+select, input[type="file"] {
+  width: 100%;
+  padding: 13px;
+  color: var(--text);
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 13px;
+  padding: 13px 10px;
+  font-weight: 750;
+  transition: .15s;
+}
+
+.btn:active { transform: scale(.98); }
+
+.primary {
+  color: white;
+  background: linear-gradient(120deg, #9565f8, #6559e8);
+}
+
+.secondary {
+  color: var(--text);
+  background: var(--panel2);
+  border-color: var(--border);
+}
+
+.stop {
+  color: #ffd5df;
+  background: #462033;
+  border-color: #79334d;
+}
+
+.full {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.note {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+audio {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.recording {
+  text-align: center;
+  background: #421b31;
+  border: 1px solid #8b365e;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.recording[hidden] { display: none; }
+
+.record-item {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  padding: 13px;
+  border-radius: 13px;
+  margin-top: 12px;
+}
+
+.record-item strong { font-size: 13px; }
+
+.record-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.record-actions a,
+.record-actions button {
+  flex: 1;
+  border: 0;
+  border-radius: 9px;
+  background: #34425d;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 12px;
+  background: #15283a;
+  color: var(--cyan);
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  padding: 22px 10px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media(max-width: 600px) {
+  .voice-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .card { padding: 14px; }
+  h1 { font-size: 24px; }
+}
+
+@media(max-width: 350px) {
+  .voice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 </style>
 </head>
+
 <body>
+
 <header>
- <div class="logo">🎙️</div>
- <h1>لازم تغيّر صوتك</h1>
- <p>اختار شخصيتك الصوتية واضبط المؤثرات بنفسك</p>
+  <div class="logo">🎙️</div>
+  <h1>لازم تغيّر صوتك</h1>
+  <p>اختار صوتك الجديد وتحكم بالتفاصيل</p>
 </header>
 
 <main>
- <section class="card">
-  <div class="status">
-   <span class="dot" id="statusDot"></span>
-   <span id="statusText">الميكروفون متوقف</span>
-  </div>
-  <h2 class="section-title">🎭 اختار الصوت</h2>
-  <div class="grid" id="voiceGrid"></div>
- </section>
 
- <section class="card">
-  <h2 class="section-title">🎚️ تحكم احترافي بالصوت</h2>
+  <section class="card">
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">جاري تجهيز معالج الصوت...</span>
+    </div>
 
-  <div class="control">
-   <div class="row">
-    <label for="pitch">طبقة الصوت</label>
-    <output id="pitchOut">1.00x</output>
-   </div>
-   <input id="pitch" type="range" min="0.55" max="2.0"
-    step="0.01" value="1">
-  </div>
+    <h2 class="title">🎭 الشخصيات الصوتية</h2>
+    <div class="voice-grid" id="voiceGrid"></div>
 
-  <div class="control">
-   <div class="row">
-    <label for="depth">عمق الصوت</label>
-    <output id="depthOut">50%</output>
-   </div>
-   <input id="depth" type="range" min="0" max="100" value="50">
-  </div>
+    <p class="note">
+      الأنماط تغير طبقة الصوت والمؤثرات. تغيير الطبقة لا يحول الصوت
+      وحده إلى هوية صوتية بشرية مطابقة.
+    </p>
+  </section>
 
-  <div class="control">
-   <div class="row">
-    <label for="echo">الصدى</label>
-    <output id="echoOut">20%</output>
-   </div>
-   <input id="echo" type="range" min="0" max="100" value="20">
-  </div>
+  <section class="card">
+    <h2 class="title">🎚️ إعدادات الصوت</h2>
 
-  <div class="control">
-   <div class="row">
-    <label for="robot">التشويه الإلكتروني</label>
-    <output id="robotOut">0%</output>
-   </div>
-   <input id="robot" type="range" min="0" max="100" value="0">
-  </div>
+    <div class="control">
+      <div class="label-row">
+        <label for="pitch">طبقة الصوت الحقيقية</label>
+        <output id="pitchOut">1.00x</output>
+      </div>
+      <input id="pitch" type="range"
+        min="0.60" max="1.80" step="0.01" value="1">
+    </div>
 
-  <div class="control">
-   <div class="row">
-    <label for="volume">مستوى الصوت</label>
-    <output id="volumeOut">80%</output>
-   </div>
-   <input id="volume" type="range" min="0" max="100" value="80">
-  </div>
+    <div class="control">
+      <div class="label-row">
+        <label for="depth">عمق الصوت</label>
+        <output id="depthOut">50%</output>
+      </div>
+      <input id="depth" type="range"
+        min="0" max="100" value="50">
+    </div>
 
-  <div class="control">
-   <label for="reverb">أجواء الصوت</label>
-   <select id="reverb">
-    <option value="0">بدون أجواء إضافية</option>
-    <option value="0.2">غرفة صغيرة</option>
-    <option value="0.5">قاعة واسعة</option>
-    <option value="0.8">كهف مرعب</option>
-    <option value="1">فضاء عميق</option>
-   </select>
-  </div>
+    <div class="control">
+      <div class="label-row">
+        <label for="echo">الصدى</label>
+        <output id="echoOut">15%</output>
+      </div>
+      <input id="echo" type="range"
+        min="0" max="100" value="15">
+    </div>
 
-  <button class="btn secondary full" id="reset">↺ إعادة الإعدادات</button>
- </section>
+    <div class="control">
+      <div class="label-row">
+        <label for="distortion">التشويه الإلكتروني</label>
+        <output id="distortionOut">0%</output>
+      </div>
+      <input id="distortion" type="range"
+        min="0" max="100" value="0">
+    </div>
 
- <section class="card">
-  <h2 class="section-title">🎤 التسجيل المباشر</h2>
-  <div class="recording" id="recordingIndicator" hidden>
-   🔴 جاري التسجيل...
-  </div>
-  <div class="buttons">
-   <button class="btn primary" id="startMic">🎙️ تشغيل الميكروفون</button>
-   <button class="btn secondary" id="stopMic">⏹️ إيقاف الميكروفون</button>
-   <button class="btn primary" id="startRecord">🔴 بدء التسجيل</button>
-   <button class="btn danger" id="stopRecord">⏹️ إنهاء التسجيل</button>
-  </div>
-  <p class="note">
-   قد يتطلب المتصفح إذن الميكروفون. الصوت المعالج يُسمع عبر السماعات
-   عند تشغيل المراقبة، وقد يحدث صدى إذا اقتربت السماعة من الميكروفون.
-  </p>
- </section>
+    <div class="control">
+      <div class="label-row">
+        <label for="volume">مستوى الصوت</label>
+        <output id="volumeOut">80%</output>
+      </div>
+      <input id="volume" type="range"
+        min="0" max="100" value="80">
+    </div>
 
- <section class="card">
-  <h2 class="section-title">📁 تحويل ملف صوتي</h2>
-  <label for="audioFile">اختار تسجيلاً من جهازك</label>
-  <input id="audioFile" type="file" accept="audio/*">
-  <audio id="filePlayer" controls hidden></audio>
-  <p class="note">
-   هذه النسخة تطبق مؤثرات على الملف محلياً عند تشغيله في المتصفح.
-   لا تحوّل الملف تلقائياً إلى صوت بشري جديد بالذكاء الاصطناعي.
-  </p>
-  <button class="btn primary full" id="processFile">🎛️ معالجة الملف وتنزيل النتيجة</button>
- </section>
+    <div class="control">
+      <label for="space">المؤثر المكاني</label>
+      <select id="space">
+        <option value="0">بدون صدى إضافي</option>
+        <option value="0.15">غرفة صغيرة</option>
+        <option value="0.35">قاعة كبيرة</option>
+        <option value="0.55">كهف</option>
+        <option value="0.7">فضاء</option>
+      </select>
+    </div>
 
- <section class="card">
-  <h2 class="section-title">💾 تسجيلاتي</h2>
-  <div id="library"><p class="note">التسجيلات الجديدة تظهر هنا.</p></div>
-  <button class="btn danger full" id="clearLibrary">🗑️ حذف التسجيلات من القائمة</button>
- </section>
+    <button class="btn secondary full" id="reset">
+      ↺ إعادة ضبط الإعدادات
+    </button>
+  </section>
+
+  <section class="card">
+    <h2 class="title">🎤 الميكروفون المباشر</h2>
+
+    <div class="recording" id="recordingIndicator" hidden>
+      🔴 جاري تسجيل الصوت المعالج
+    </div>
+
+    <div class="buttons">
+      <button class="btn primary" id="startMic">
+        🎙️ تشغيل الميكروفون
+      </button>
+      <button class="btn stop" id="stopMic">
+        ⏹️ إيقاف الميكروفون
+      </button>
+      <button class="btn primary" id="startRecord">
+        🔴 بدء التسجيل
+      </button>
+      <button class="btn secondary" id="stopRecord">
+        إنهاء التسجيل
+      </button>
+    </div>
+
+    <p class="note">
+      عند تشغيل الميكروفون ستسمع الصوت بعد المعالجة من خلال السماعات.
+      استخدم سماعات رأس لتقليل رجوع الصوت إلى الميكروفون.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="title">📂 رفع ملف صوتي</h2>
+
+    <input id="audioFile" type="file" accept="audio/*">
+
+    <audio id="filePlayer" controls hidden></audio>
+
+    <div class="buttons" style="margin-top:12px">
+      <button class="btn primary" id="playFile">
+        ▶️ تشغيل بالمؤثرات
+      </button>
+      <button class="btn secondary" id="stopFile">
+        ⏹️ إيقاف الملف
+      </button>
+    </div>
+
+    <p class="note">
+      تقدر تشغل الملف وتسمع النتيجة. لتصدير النتيجة، ابدأ التسجيل
+      أثناء تشغيل الملف، ثم أنهِ التسجيل ونزّل الصوت الناتج.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="title">💾 تسجيلاتي</h2>
+    <div id="library">
+      <p class="note">ماكو تسجيلات بهذه الجلسة حالياً.</p>
+    </div>
+    <button class="btn stop full" id="clearLibrary">
+      🗑️ حذف التسجيلات
+    </button>
+  </section>
+
+  <section class="card">
+    <h2 class="title">ℹ️ حالة النظام</h2>
+    <div class="message" id="systemMessage">
+      اضغط تشغيل الميكروفون للبدء.
+    </div>
+  </section>
+
 </main>
 
-<footer>لازم تغيّر صوتك · معالجة صوت محلية داخل المتصفح</footer>
+<footer>
+  لازم تغيّر صوتك · معالجة الصوت داخل المتصفح
+</footer>
 
-<script>
-"use strict";
+<script type="module">
+import {
+  SoundTouchNode
+} from "https://esm.sh/@soundtouchjs/audio-worklet@2.1.1";
 
 const $ = id => document.getElementById(id);
 
 const voices = [
- {id:"normal",name:"طبيعي",icon:"🎤",pitch:1,depth:50,echo:0,robot:0},
- {id:"girl",name:"بنت ناعم",icon:"👩",pitch:1.45,depth:25,echo:8,robot:0},
- {id:"boy",name:"ولد",icon:"👦",pitch:1.25,depth:35,echo:5,robot:0},
- {id:"deep",name:"رجل عميق",icon:"🧔",pitch:.72,depth:85,echo:12,robot:0},
- {id:"horror",name:"مرعب",icon:"👹",pitch:.62,depth:100,echo:75,robot:18},
- {id:"robot",name:"روبوت",icon:"🤖",pitch:.9,depth:55,echo:10,robot:75},
- {id:"alien",name:"فضائي",icon:"👽",pitch:1.55,depth:40,echo:65,robot:45},
- {id:"ghost",name:"شبح",icon:"👻",pitch:1.2,depth:45,echo:90,robot:15},
- {id:"radio",name:"راديو",icon:"📻",pitch:1,depth:50,echo:5,robot:25},
- {id:"game",name:"ألعاب",icon:"🎮",pitch:1.35,depth:35,echo:18,robot:20},
- {id:"chipmunk",name:"كرتوني",icon:"🐿️",pitch:1.85,depth:15,echo:5,robot:5},
- {id:"villain",name:"شرير",icon:"🦇",pitch:.68,depth:90,echo:55,robot:15},
- {id:"water",name:"مائي",icon:"🌊",pitch:1.1,depth:50,echo:45,robot:30},
- {id:"metal",name:"معدني",icon:"🔩",pitch:.85,depth:65,echo:20,robot:65},
- {id:"cinema",name:"سينمائي",icon:"🎬",pitch:.9,depth:65,echo:28,robot:0},
- {id:"bear",name:"غليظ",icon:"🐻",pitch:.65,depth:95,echo:5,robot:0}
+  {id:"normal", name:"طبيعي", icon:"🎤", pitch:1.00, depth:50, echo:0, dist:0},
+  {id:"girl", name:"بنت ناعم", icon:"👩", pitch:1.38, depth:30, echo:8, dist:0},
+  {id:"boy", name:"ولد", icon:"👦", pitch:1.20, depth:40, echo:4, dist:0},
+  {id:"deep", name:"رجل عميق", icon:"🧔", pitch:0.78, depth:82, echo:8, dist:0},
+  {id:"horror", name:"مرعب", icon:"👹", pitch:0.66, depth:95, echo:70, dist:15},
+  {id:"robot", name:"روبوت", icon:"🤖", pitch:0.92, depth:50, echo:10, dist:70},
+  {id:"alien", name:"فضائي", icon:"👽", pitch:1.48, depth:35, echo:60, dist:35},
+  {id:"ghost", name:"شبح", icon:"👻", pitch:1.15, depth:45, echo:85, dist:8},
+  {id:"radio", name:"راديو", icon:"📻", pitch:1.00, depth:60, echo:5, dist:30},
+  {id:"game", name:"ألعاب", icon:"🎮", pitch:1.28, depth:40, echo:15, dist:15},
+  {id:"cartoon", name:"كرتوني", icon:"🐿️", pitch:1.65, depth:20, echo:5, dist:5},
+  {id:"villain", name:"شرير", icon:"🦇", pitch:0.72, depth:90, echo:48, dist:18},
+  {id:"water", name:"مائي", icon:"🌊", pitch:1.08, depth:45, echo:40, dist:25},
+  {id:"metal", name:"معدني", icon:"🔩", pitch:0.90, depth:65, echo:20, dist:65},
+  {id:"cinema", name:"سينمائي", icon:"🎬", pitch:0.92, depth:65, echo:28, dist:0},
+  {id:"giant", name:"عملاق", icon:"🐻", pitch:0.68, depth:100, echo:12, dist:0}
 ];
 
-let selected = "normal";
-let audioContext = null;
+let ctx = null;
+let processor = null;
 let micStream = null;
-let source = null;
-let inputGain = null;
-let pitchNode = null;
-let filter = null;
-let shaper = null;
-let delay = null;
-let feedback = null;
-let wet = null;
-let dry = null;
-let master = null;
-let analyser = null;
-let mediaRecorder = null;
-let recordedChunks = [];
+let micSource = null;
+let fileSource = null;
+let currentFileUrl = null;
+let recorder = null;
+let chunks = [];
 let recordings = [];
-let micOn = false;
-let fileObjectURL = null;
+let micActive = false;
+let fileConnected = false;
+let selectedVoice = "normal";
+let outputDestination = null;
 
-function buildVoices(){
- const grid = $("voiceGrid");
- grid.innerHTML = "";
- voices.forEach(v => {
-  const b = document.createElement("button");
-  b.type = "button";
-  b.className = "voice" + (v.id === selected ? " selected" : "");
-  b.innerHTML = `<span class="icon">${v.icon}</span><span>${v.name}</span>`;
-  b.addEventListener("click", () => {
-   selected = v.id;
-   buildVoices();
-   $("pitch").value = v.pitch;
-   $("depth").value = v.depth;
-   $("echo").value = v.echo;
-   $("robot").value = v.robot;
-   updateLabels();
-   applySettings();
-  });
-  grid.appendChild(b);
- });
+const state = {
+  ready: false,
+  recording: false
+};
+
+function showMessage(text) {
+  $("systemMessage").textContent = text;
 }
 
-function updateLabels(){
- $("pitchOut").textContent = Number($("pitch").value).toFixed(2)+"x";
- ["depth","echo","robot","volume"].forEach(id=>{
-  $(id+"Out").textContent = $(id).value+"%";
- });
+function setStatus(text, active = false) {
+  $("statusText").textContent = text;
+  $("statusDot").classList.toggle("on", active);
 }
 
-function makeDistortion(amount){
- const curve = new Float32Array(44100);
- const k = amount * 250;
- for(let i=0;i<curve.length;i++){
-  const x = (i*2/curve.length)-1;
-  curve[i] = k === 0 ? x :
-   ((3+k)*x*20*Math.PI/180)/(Math.PI+k*Math.abs(x));
- }
- return curve;
+function buildVoiceButtons() {
+  const grid = $("voiceGrid");
+  grid.innerHTML = "";
+
+  for (const voice of voices) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className =
+      "voice" + (voice.id === selectedVoice ? " selected" : "");
+
+    button.innerHTML =
+      `<span class="emoji">${voice.icon}</span>` +
+      `<span class="name">${voice.name}</span>`;
+
+    button.addEventListener("click", () => {
+      selectedVoice = voice.id;
+
+      $("pitch").value = voice.pitch;
+      $("depth").value = voice.depth;
+      $("echo").value = voice.echo;
+      $("distortion").value = voice.dist;
+
+      buildVoiceButtons();
+      updateSettings();
+    });
+
+    grid.appendChild(button);
+  }
 }
 
-async function ensureAudio(){
- if(!audioContext){
-  const AC = window.AudioContext || window.webkitAudioContext;
-  if(!AC) throw new Error("المتصفح لا يدعم معالجة الصوت.");
-  audioContext = new AC();
+function updateOutputs() {
+  $("pitchOut").textContent =
+    Number($("pitch").value).toFixed(2) + "x";
 
-  inputGain = audioContext.createGain();
-  pitchNode = audioContext.createBiquadFilter();
-  pitchNode.type = "allpass";
+  for (const id of ["depth", "echo", "distortion", "volume"]) {
+    $(id + "Out").textContent = $(id).value + "%";
+  }
+}
 
-  filter = audioContext.createBiquadFilter();
-  filter.type = "lowpass";
-  filter.frequency.value = 18000;
+function makeDistortion(amount) {
+  const curve = new Float32Array(44100);
+  const k = amount * 80;
 
-  shaper = audioContext.createWaveShaper();
-  shaper.oversample = "4x";
+  for (let i = 0; i < curve.length; i++) {
+    const x = (i * 2 / (curve.length - 1)) - 1;
+    curve[i] = k === 0
+      ? x
+      : ((3 + k) * x * 20 * Math.PI / 180) /
+        (Math.PI + k * Math.abs(x));
+  }
 
-  delay = audioContext.createDelay(2);
-  feedback = audioContext.createGain();
-  wet = audioContext.createGain();
-  dry = audioContext.createGain();
-  master = audioContext.createGain();
-  analyser = audioContext.createAnalyser();
+  return curve;
+}
 
-  inputGain.connect(pitchNode);
-  pitchNode.connect(filter);
-  filter.connect(shaper);
+async function initializeAudio() {
+  if (ctx) {
+    if (ctx.state === "suspended") await ctx.resume();
+    return;
+  }
 
-  shaper.connect(dry);
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) {
+    throw new Error("المتصفح لا يدعم Web Audio API.");
+  }
+
+  ctx = new AudioContextClass();
+
+  /*
+   * مكتبة SoundTouchJS تحتاج ملف AudioWorklet منفصلاً.
+   * نستدعي نسخة المعالج المنشورة على jsDelivr.
+   */
+  const processorUrl =
+    "https://cdn.jsdelivr.net/npm/@soundtouchjs/audio-worklet@2.1.1/.dist/soundtouch-processor.js";
+
+  await SoundTouchNode.register(ctx, processorUrl);
+
+  processor = new SoundTouchNode({ context: ctx });
+
+  const toneFilter = ctx.createBiquadFilter();
+  toneFilter.type = "lowpass";
+  toneFilter.frequency.value = 18000;
+
+  const dry = ctx.createGain();
+  const delay = ctx.createDelay(2);
+  const feedback = ctx.createGain();
+  const wet = ctx.createGain();
+
+  const distortion = ctx.createWaveShaper();
+  distortion.oversample = "4x";
+
+  const master = ctx.createGain();
+
+  processor.connect(toneFilter);
+  toneFilter.connect(distortion);
+
+  distortion.connect(dry);
   dry.connect(master);
 
-  shaper.connect(delay);
+  distortion.connect(delay);
   delay.connect(feedback);
   feedback.connect(delay);
   delay.connect(wet);
   wet.connect(master);
 
-  master.connect(analyser);
-  analyser.connect(audioContext.destination);
+  master.connect(ctx.destination);
 
-  // إتاحة الصوت المعالج للتسجيل.
-  const dest = audioContext.createMediaStreamDestination();
-  master.connect(dest);
-  master._recordDestination = dest;
- }
- if(audioContext.state === "suspended") await audioContext.resume();
-}
+  outputDestination = ctx.createMediaStreamDestination();
+  master.connect(outputDestination);
 
-function applySettings(){
- updateLabels();
- if(!audioContext) return;
-
- const pitch = Number($("pitch").value);
- const depth = Number($("depth").value)/100;
- const echo = Number($("echo").value)/100;
- const distortion = Number($("robot").value)/100;
- const volume = Number($("volume").value)/100;
- const atmosphere = Number($("reverb").value);
-
- // ملاحظة: هذا مرشح نغمي، وليس خوارزمية تغيير طبقة مستقلة.
- // تغيير pitch الحقيقي يحتاج خوارزمية DSP مخصصة.
- filter.frequency.setTargetAtTime(
-  18000 - depth*15500, audioContext.currentTime, .04
- );
- filter.Q.setTargetAtTime(0.5+depth*7, audioContext.currentTime, .04);
- shaper.curve = makeDistortion(distortion);
- delay.delayTime.setTargetAtTime(.08+atmosphere*.6, audioContext.currentTime, .04);
- feedback.gain.setTargetAtTime(Math.min(.78,echo*.65), audioContext.currentTime, .04);
- wet.gain.setTargetAtTime(Math.min(.85,echo*.65+atmosphere*.35), audioContext.currentTime, .04);
- dry.gain.setTargetAtTime(1-echo*.45, audioContext.currentTime, .04);
- master.gain.setTargetAtTime(volume, audioContext.currentTime, .04);
-
- // مرشح لتقريب اللون الصوتي حسب النمط المختار.
- if(selected==="radio"){
-  filter.type="bandpass";
-  filter.frequency.setTargetAtTime(1700,audioContext.currentTime,.04);
-  filter.Q.setTargetAtTime(1,audioContext.currentTime,.04);
- } else if(selected==="water" || selected==="alien"){
-  filter.type="lowpass";
- } else {
-  filter.type="lowpass";
- }
-}
-
-async function startMic(){
- try{
-  await ensureAudio();
-  if(micOn) return;
-  micStream = await navigator.mediaDevices.getUserMedia({
-   audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}
-  });
-  source = audioContext.createMediaStreamSource(micStream);
-  source.connect(inputGain);
-  micOn = true;
-  $("statusDot").classList.add("active");
-  $("statusText").textContent="الميكروفون يعمل";
-  applySettings();
- }catch(e){
-  alert("تعذر تشغيل الميكروفون. تأكد من السماح بالوصول إليه واستخدام HTTPS أو localhost.\n"+e.message);
- }
-}
-
-function stopMic(){
- if(mediaRecorder && mediaRecorder.state==="recording") stopRecord();
- if(source){
-  try{source.disconnect()}catch(e){}
-  source=null;
- }
- if(micStream){
-  micStream.getTracks().forEach(t=>t.stop());
-  micStream=null;
- }
- micOn=false;
- $("statusDot").classList.remove("active");
- $("statusText").textContent="الميكروفون متوقف";
-}
-
-function addRecording(blob,name){
- const url = URL.createObjectURL(blob);
- recordings.push({blob,url,name});
- renderLibrary();
-}
-
-function renderLibrary(){
- const lib=$("library");
- lib.innerHTML="";
- if(!recordings.length){
-  lib.innerHTML='<p class="note">ماكو تسجيلات محفوظة بهذه الجلسة.</p>';
-  return;
- }
- recordings.forEach((r,i)=>{
-  const box=document.createElement("div");
-  box.className="library-item";
-  const title=document.createElement("strong");
-  title.textContent=r.name;
-  const audio=document.createElement("audio");
-  audio.controls=true;
-  audio.src=r.url;
-  const actions=document.createElement("div");
-  actions.className="library-actions";
-  const link=document.createElement("a");
-  link.href=r.url;
-  link.download=r.name;
-  link.textContent="⬇️ تنزيل";
-  const del=document.createElement("button");
-  del.textContent="🗑️ حذف";
-  del.onclick=()=>{
-   URL.revokeObjectURL(r.url);
-   recordings.splice(i,1);
-   renderLibrary();
+  ctx._voiceNodes = {
+    toneFilter, dry, delay, feedback, wet, distortion, master
   };
-  actions.append(link,del);
-  box.append(title,audio,actions);
-  lib.appendChild(box);
- });
+
+  state.ready = true;
+  updateSettings();
+
+  setStatus("معالج تغيير طبقة الصوت جاهز", true);
+  showMessage("تم تحميل معالج تغيير طبقة الصوت.");
 }
 
-async function startRecord(){
- try{
-  await startMic();
-  if(!micOn) return;
-  if(!window.MediaRecorder) throw new Error("المتصفح لا يدعم تسجيل الصوت.");
-  recordedChunks=[];
-  const stream=master._recordDestination.stream;
-  let options={};
-  if(MediaRecorder.isTypeSupported("audio/webm;codecs=opus")){
-   options.mimeType="audio/webm;codecs=opus";
-  }
-  mediaRecorder=new MediaRecorder(stream,options);
-  mediaRecorder.ondataavailable=e=>{
-   if(e.data && e.data.size>0) recordedChunks.push(e.data);
-  };
-  mediaRecorder.onstop=()=>{
-   const blob=new Blob(recordedChunks,{type:mediaRecorder.mimeType||"audio/webm"});
-   if(blob.size>0) addRecording(blob,"voice-"+Date.now()+".webm");
-   $("recordingIndicator").hidden=true;
-  };
-  mediaRecorder.start(250);
-  $("recordingIndicator").hidden=false;
- }catch(e){
-  alert("تعذر بدء التسجيل: "+e.message);
- }
-}
+function updateSettings() {
+  updateOutputs();
+  if (!ctx || !processor) return;
 
-function stopRecord(){
- if(mediaRecorder && mediaRecorder.state==="recording"){
-  mediaRecorder.stop();
- }
- $("recordingIndicator").hidden=true;
-}
+  const pitch = Number($("pitch").value);
+  const depth = Number($("depth").value) / 100;
+  const echo = Number($("echo").value) / 100;
+  const dist = Number($("distortion").value) / 100;
+  const volume = Number($("volume").value) / 100;
+  const space = Number($("space").value);
 
-$("startMic").onclick=startMic;
-$("stopMic").onclick=stopMic;
-$("startRecord").onclick=startRecord;
-$("stopRecord").onclick=stopRecord;
+  /*
+   * هذا هو تغيير الطبقة الفعلي عبر SoundTouchJS.
+   * القيمة 1 = الطبقة الأصلية.
+   * أكبر من 1 = طبقة أعلى.
+   * أقل من 1 = طبقة أخفض.
+   */
+  processor.pitch.setTargetAtTime
+    ? processor.pitch.setTargetAtTime(pitch, ctx.currentTime, 0.04)
+    : processor.pitch.setValueAtTime(pitch, ctx.currentTime);
 
-["pitch","depth","echo","robot","volume","reverb"].forEach(id=>{
- $(id).addEventListener("input",applySettings);
- $(id).addEventListener("change",applySettings);
-});
+  const n = ctx._voiceNodes;
 
-$("reset").onclick=()=>{
- selected="normal";
- buildVoices();
- $("pitch").value=1;
- $("depth").value=50;
- $("echo").value=20;
- $("robot").value=0;
- $("volume").value=80;
- $("reverb").value=0;
- applySettings();
-};
-
-$("clearLibrary").onclick=()=>{
- recordings.forEach(r=>URL.revokeObjectURL(r.url));
- recordings=[];
- renderLibrary();
-};
-
-$("audioFile").addEventListener("change",()=>{
- const file=$("audioFile").files[0];
- if(!file) return;
- if(fileObjectURL) URL.revokeObjectURL(fileObjectURL);
- fileObjectURL=URL.createObjectURL(file);
- $("filePlayer").src=fileObjectURL;
- $("filePlayer").hidden=false;
-});
-
-$("processFile").onclick=async()=>{
- const file=$("audioFile").files[0];
- if(!file){
-  alert("اختار ملفاً صوتياً أولاً.");
-  return;
- }
- try{
-  await ensureAudio();
-  const arrayBuffer=await file.arrayBuffer();
-  const decoded=await audioContext.decodeAudioData(arrayBuffer);
-  const offline=new OfflineAudioContext(
-   decoded.numberOfChannels,decoded.length,decoded.sampleRate
+  n.toneFilter.frequency.setTargetAtTime(
+    18000 - depth * 14000,
+    ctx.currentTime,
+    0.05
   );
-  const src=offline.createBufferSource();
-  src.buffer=decoded;
 
-  const filt=offline.createBiquadFilter();
-  filt.type=selected==="radio"?"bandpass":"lowpass";
-  filt.frequency.value=selected==="radio"?1700:
-   18000-(Number($("depth").value)/100)*15500;
-  filt.Q.value=selected==="radio"?1:
-   .5+(Number($("depth").value)/100)*7;
+  n.toneFilter.Q.setTargetAtTime(
+    0.7 + depth * 3,
+    ctx.currentTime,
+    0.05
+  );
 
-  const sh=offline.createWaveShaper();
-  sh.curve=makeDistortion(Number($("robot").value)/100);
-  sh.oversample="4x";
-
-  const out=offline.createGain();
-  out.gain.value=Number($("volume").value)/100;
-
-  const d=offline.createDelay(2);
-  d.delayTime.value=.08+Number($("reverb").value)*.6;
-  const fb=offline.createGain();
-  fb.gain.value=Math.min(.65,Number($("echo").value)/100*.5);
-  const w=offline.createGain();
-  w.gain.value=Number($("echo").value)/100*.55+
-   Number($("reverb").value)*.3;
-  const dry2=offline.createGain();
-  dry2.gain.value=1-Number($("echo").value)/100*.4;
-
-  src.connect(filt);
-  filt.connect(sh);
-  sh.connect(dry2);
-  dry2.connect(out);
-  sh.connect(d);
-  d.connect(fb);
-  fb.connect(d);
-  d.connect(w);
-  w.connect(out);
-  out.connect(offline.destination);
-
-  src.start();
-  const rendered=await offline.startRendering();
-  const wav=bufferToWav(rendered);
-  const blob=new Blob([wav],{type:"audio/wav"});
-  addRecording(blob,"converted-"+Date.now()+".wav");
-
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url;
-  a.download="converted-"+Date.now()+".wav";
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),3000);
-  alert("تمت معالجة الملف وتنزيله.");
- }catch(e){
-  alert("تعذرت معالجة الملف: "+e.message);
- }
-};
-
-function bufferToWav(buffer){
- const channels=buffer.numberOfChannels;
- const rate=buffer.sampleRate;
- const frames=buffer.length;
- const bytesPerSample=2;
- const blockAlign=channels*bytesPerSample;
- const dataSize=frames*blockAlign;
- const ab=new ArrayBuffer(44+dataSize);
- const view=new DataView(ab);
- function str(offset,s){
-  for(let i=0;i<s.length;i++) view.setUint8(offset+i,s.charCodeAt(i));
- }
- str(0,"RIFF");
- view.setUint32(4,36+dataSize,true);
- str(8,"WAVE");
- str(12,"fmt ");
- view.setUint32(16,16,true);
- view.setUint16(20,1,true);
- view.setUint16(22,channels,true);
- view.setUint32(24,rate,true);
- view.setUint32(28,rate*blockAlign,true);
- view.setUint16(32,blockAlign,true);
- view.setUint16(34,16,true);
- str(36,"data");
- view.setUint32(40,dataSize,true);
- const data=[];
- for(let c=0;c<channels;c++) data.push(buffer.getChannelData(c));
- let offset=44;
- for(let i=0;i<frames;i++){
-  for(let c=0;c<channels;c++){
-   let s=Math.max(-1,Math.min(1,data[c][i]));
-   view.setInt16(offset,s<0?s*32768:s*32767,true);
-   offset+=2;
+  if (selectedVoice === "radio") {
+    n.toneFilter.type = "bandpass";
+    n.toneFilter.frequency.setTargetAtTime(1700, ctx.currentTime, 0.05);
+  } else {
+    n.toneFilter.type = "lowpass";
   }
- }
- return ab;
+
+  n.distortion.curve = makeDistortion(dist);
+  n.delay.delayTime.setTargetAtTime(
+    0.10 + space * 0.5,
+    ctx.currentTime,
+    0.05
+  );
+
+  n.feedback.gain.setTargetAtTime(
+    Math.min(0.65, echo * 0.45),
+    ctx.currentTime,
+    0.05
+  );
+
+  n.wet.gain.setTargetAtTime(
+    Math.min(0.8, echo * 0.5 + space * 0.25),
+    ctx.currentTime,
+    0.05
+  );
+
+  n.dry.gain.setTargetAtTime(
+    1 - echo * 0.35,
+    ctx.currentTime,
+    0.05
+  );
+
+  n.master.gain.setTargetAtTime(
+    volume,
+    ctx.currentTime,
+    0.05
+  );
 }
 
-buildVoices();
-updateLabels();
+async function startMic() {
+  try {
+    await initializeAudio();
+
+    if (micActive) return;
+
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+
+    micSource = ctx.createMediaStreamSource(micStream);
+    micSource.connect(processor);
+
+    micActive = true;
+    setStatus("الميكروفون يعمل", true);
+    showMessage("الصوت يدخل إلى معالج تغيير الطبقة.");
+
+  } catch (error) {
+    setStatus("تعذر تشغيل الميكروفون");
+    showMessage(error.message);
+
+    alert(
+      "تعذر تشغيل الميكروفون.\n" +
+      "تأكد من السماح بالوصول إليه ومن اتصال الإنترنت.\n\n" +
+      error.message
+    );
+  }
+}
+
+function stopMic() {
+  if (micSource) {
+    try { micSource.disconnect(); } catch (_) {}
+    micSource = null;
+  }
+
+  if (micStream) {
+    micStream.getTracks().forEach(track => track.stop());
+    micStream = null;
+  }
+
+  micActive = false;
+  setStatus("الميكروفون متوقف");
+  showMessage("تم إيقاف الميكروفون.");
+}
+
+async function playFile() {
+  try {
+    await initializeAudio();
+
+    const file = $("audioFile").files[0];
+
+    if (!file) {
+      alert("اختار ملفاً صوتياً أولاً.");
+      return;
+    }
+
+    const player = $("filePlayer");
+
+    if (currentFileUrl) URL.revokeObjectURL(currentFileUrl);
+    currentFileUrl = URL.createObjectURL(file);
+    player.src = currentFileUrl;
+    player.hidden = false;
+
+    /*
+     * إنشاء MediaElementSource مرة واحدة لكل عنصر.
+     * نعيد استخدام المصدر عند اختيار ملف جديد.
+     */
+    if (!fileConnected) {
+      fileSource = ctx.createMediaElementSource(player);
+      fileSource.connect(processor);
+      fileConnected = true;
+    }
+
+    await player.play();
+    showMessage("يتم تشغيل الملف عبر معالج الصوت.");
+  } catch (error) {
+    alert("تعذر تشغيل الملف: " + error.message);
+  }
+}
+
+function stopFile() {
+  $("filePlayer").pause();
+  $("filePlayer").currentTime = 0;
+  showMessage("تم إيقاف الملف الصوتي.");
+}
+
+function addRecording(blob, name) {
+  const url = URL.createObjectURL(blob);
+  recordings.push({ blob, url, name });
+  renderLibrary();
+}
+
+function renderLibrary() {
+  const library = $("library");
+  library.innerHTML = "";
+
+  if (!recordings.length) {
+    library.innerHTML =
+      '<p class="note">ماكو تسجيلات بهذه الجلسة.</p>';
+    return;
+  }
+
+  recordings.forEach((item, index) => {
+    const box = document.createElement("div");
+    box.className = "record-item";
+
+    const title = document.createElement("strong");
+    title.textContent = item.name;
+
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = item.url;
+
+    const actions = document.createElement("div");
+    actions.className = "record-actions";
+
+    const download = document.createElement("a");
+    download.href = item.url;
+    download.download = item.name;
+    download.textContent = "⬇️ تنزيل";
+
+    const remove = document.createElement("button");
+    remove.textContent = "🗑️ حذف";
+
+    remove.onclick = () => {
+      URL.revokeObjectURL(item.url);
+      recordings.splice(index, 1);
+      renderLibrary();
+    };
+
+    actions.append(download, remove);
+    box.append(title, audio, actions);
+    library.appendChild(box);
+  });
+}
+
+async function startRecording() {
+  try {
+    await initializeAudio();
+
+    if (!window.MediaRecorder) {
+      throw new Error("المتصفح لا يدعم تسجيل الصوت.");
+    }
+
+    if (recorder && recorder.state === "recording") return;
+
+    chunks = [];
+
+    const stream = outputDestination.stream;
+
+    let options = {};
+
+    if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+      options.mimeType = "audio/webm;codecs=opus";
+    }
+
+    recorder = new MediaRecorder(stream, options);
+
+    recorder.ondataavailable = event => {
+      if (event.data && event.data.size) {
+        chunks.push(event.data);
+      }
+    };
+
+    recorder.onstop = () => {
+      const type = recorder.mimeType || "audio/webm";
+      const blob = new Blob(chunks, { type });
+
+      if (blob.size > 0) {
+        const extension = type.includes("ogg") ? "ogg" : "webm";
+        addRecording(blob, "voice-" + Date.now() + "." + extension);
+        showMessage("تم حفظ التسجيل المعالج مؤقتاً.");
+      }
+
+      $("recordingIndicator").hidden = true;
+    };
+
+    recorder.start(250);
+    state.recording = true;
+    $("recordingIndicator").hidden = false;
+
+  } catch (error) {
+    alert("تعذر بدء التسجيل: " + error.message);
+  }
+}
+
+function stopRecording() {
+  if (recorder && recorder.state === "recording") {
+    recorder.stop();
+  }
+
+  state.recording = false;
+  $("recordingIndicator").hidden = true;
+}
+
+function resetSettings() {
+  selectedVoice = "normal";
+
+  $("pitch").value = 1;
+  $("depth").value = 50;
+  $("echo").value = 15;
+  $("distortion").value = 0;
+  $("volume").value = 80;
+  $("space").value = 0;
+
+  buildVoiceButtons();
+  updateSettings();
+}
+
+$("startMic").addEventListener("click", startMic);
+$("stopMic").addEventListener("click", stopMic);
+$("startRecord").addEventListener("click", startRecording);
+$("stopRecord").addEventListener("click", stopRecording);
+$("playFile").addEventListener("click", playFile);
+$("stopFile").addEventListener("click", stopFile);
+$("reset").addEventListener("click", resetSettings);
+
+for (const id of [
+  "pitch", "depth", "echo", "distortion", "volume", "space"
+]) {
+  $(id).addEventListener("input", updateSettings);
+  $(id).addEventListener("change", updateSettings);
+}
+
+$("clearLibrary").addEventListener("click", () => {
+  for (const item of recordings) {
+    URL.revokeObjectURL(item.url);
+  }
+
+  recordings = [];
+  renderLibrary();
+});
+
+window.addEventListener("beforeunload", () => {
+  if (micStream) {
+    micStream.getTracks().forEach(track => track.stop());
+  }
+
+  if (currentFileUrl) URL.revokeObjectURL(currentFileUrl);
+});
+
+buildVoiceButtons();
+updateOutputs();
 </script>
+
 </body>
 </html>
