@@ -1,963 +1,775 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090d19">
-<title>لازم تغيّر صوتك</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10111a">
+  <title>NEXORA | متجرك الإلكتروني</title>
 
-<style>
-:root {
-  --bg: #090d19;
-  --panel: #111a2b;
-  --panel2: #17233a;
-  --border: #293954;
-  --primary: #9b70ff;
-  --cyan: #45e2f5;
-  --text: #f5f7ff;
-  --muted: #9eacc6;
-  --green: #3de5a0;
-  --red: #ff557a;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-* { box-sizing: border-box; }
+  <style>
+    :root {
+      --bg: #10111a;
+      --panel: #191a26;
+      --panel2: #202131;
+      --text: #f5f5fa;
+      --muted: #9698ad;
+      --accent: #9275ff;
+      --accent2: #6a4ce6;
+      --border: rgba(255,255,255,.08);
+      --radius: 20px;
+    }
 
-body {
-  margin: 0;
-  background:
-    radial-gradient(ellipse at top, #242044 0, transparent 48%),
-    var(--bg);
-  color: var(--text);
-  font-family: system-ui, sans-serif;
-  min-height: 100vh;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-button, input, select { font: inherit; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      min-height: 100vh;
+    }
 
-button { cursor: pointer; }
+    button, input {
+      font: inherit;
+    }
 
-header {
-  text-align: center;
-  padding: 32px 16px 22px;
-}
+    button {
+      cursor: pointer;
+    }
 
-.logo {
-  width: 82px;
-  height: 82px;
-  margin: auto;
-  display: grid;
-  place-items: center;
-  font-size: 38px;
-  border-radius: 25px;
-  background: linear-gradient(135deg, var(--primary), var(--cyan));
-  box-shadow: 0 12px 40px #9b70ff44;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(16,17,26,.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
 
-h1 {
-  margin: 17px 0 7px;
-  font-size: 28px;
-}
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
-header p {
-  color: var(--muted);
-  font-size: 14px;
-  margin: 0;
-}
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
 
-main {
-  max-width: 900px;
-  padding: 12px;
-  margin: auto;
-}
+    .brand span {
+      color: var(--accent);
+    }
 
-.card {
-  padding: 19px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border);
-  border-radius: 21px;
-  background: linear-gradient(145deg, #151e31, #0f1626);
-}
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.title {
-  font-size: 18px;
-  font-weight: 800;
-  margin: 0 0 16px;
-}
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 17px;
+      background: var(--panel2);
+      color: var(--text);
+      transition: .2s;
+    }
 
-.status {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 18px;
-}
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #718096;
-}
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      font-weight: 700;
+    }
 
-.dot.on {
-  background: var(--green);
-  box-shadow: 0 0 12px var(--green);
-}
+    .btn-primary:hover {
+      background: var(--accent2);
+    }
 
-.voice-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 35px 22px 70px;
+    }
 
-.voice {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 13px 5px;
-  color: var(--text);
-  min-height: 93px;
-  transition: .2s;
-}
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 55px 42px;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(146,117,255,.20), transparent 45%),
+        linear-gradient(135deg, #1b1c2a, #151621 75%);
+    }
 
-.voice:hover {
-  border-color: var(--primary);
-  transform: translateY(-2px);
-}
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border: 1px solid rgba(146,117,255,.2);
+      border-radius: 50%;
+      left: -80px;
+      bottom: -140px;
+      box-shadow: 0 0 0 35px rgba(146,117,255,.025),
+                  0 0 0 70px rgba(146,117,255,.025);
+    }
 
-.voice.selected {
-  border-color: var(--cyan);
-  background: linear-gradient(145deg, #30305b, #1b3449);
-  box-shadow: 0 0 0 1px #45e2f522;
-}
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+    }
 
-.voice .emoji {
-  display: block;
-  font-size: 27px;
-  margin-bottom: 7px;
-}
+    .eyebrow {
+      color: #b7a7ff;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
 
-.voice .name {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-}
+    h1 {
+      font-size: clamp(30px, 5vw, 49px);
+      line-height: 1.45;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
 
-.control { margin: 22px 0; }
+    h1 span {
+      color: var(--accent);
+    }
 
-.control:first-of-type { margin-top: 8px; }
+    .hero p {
+      color: var(--muted);
+      line-height: 2;
+      font-size: 15px;
+      max-width: 530px;
+    }
 
-.label-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 27px;
+      max-width: 520px;
+    }
 
-output {
-  color: var(--cyan);
-  font-size: 13px;
-  font-weight: 700;
-  direction: ltr;
-}
+    .search {
+      width: 100%;
+      min-width: 0;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      background: #10111a;
+      border-radius: 13px;
+      outline: none;
+      color: var(--text);
+    }
 
-input[type="range"] {
-  width: 100%;
-  accent-color: var(--cyan);
-  cursor: pointer;
-}
+    .search:focus {
+      border-color: var(--accent);
+    }
 
-select, input[type="file"] {
-  width: 100%;
-  padding: 13px;
-  color: var(--text);
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
+    .section-head {
+      margin: 38px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
 
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
+    .section-head h2 {
+      font-size: 22px;
+    }
 
-.btn {
-  border: 1px solid transparent;
-  border-radius: 13px;
-  padding: 13px 10px;
-  font-weight: 750;
-  transition: .15s;
-}
+    .section-head p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
 
-.btn:active { transform: scale(.98); }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 17px;
+    }
 
-.primary {
-  color: white;
-  background: linear-gradient(120deg, #9565f8, #6559e8);
-}
+    .empty {
+      grid-column: 1 / -1;
+      padding: 55px 20px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px dashed rgba(255,255,255,.15);
+      border-radius: var(--radius);
+    }
 
-.secondary {
-  color: var(--text);
-  background: var(--panel2);
-  border-color: var(--border);
-}
+    .empty-line {
+      width: 55px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 5px;
+      margin: 0 auto 22px;
+    }
 
-.stop {
-  color: #ffd5df;
-  background: #462033;
-  border-color: #79334d;
-}
+    .empty h3 {
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
 
-.full {
-  width: 100%;
-  margin-top: 10px;
-}
+    .empty p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 2;
+    }
 
-.note {
-  font-size: 12px;
-  line-height: 1.9;
-  color: var(--muted);
-  margin-top: 14px;
-}
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      overflow: hidden;
+    }
 
-audio {
-  width: 100%;
-  margin-top: 14px;
-}
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: var(--panel2);
+    }
 
-.recording {
-  text-align: center;
-  background: #421b31;
-  border: 1px solid #8b365e;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 14px;
-}
+    .product-info {
+      padding: 16px;
+    }
 
-.recording[hidden] { display: none; }
+    .product-info h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
 
-.record-item {
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  padding: 13px;
-  border-radius: 13px;
-  margin-top: 12px;
-}
+    .price {
+      color: #b7a7ff;
+      font-weight: 700;
+    }
 
-.record-item strong { font-size: 13px; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 35px;
+    }
 
-.record-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
+    .feature {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 22px;
+    }
 
-.record-actions a,
-.record-actions button {
-  flex: 1;
-  border: 0;
-  border-radius: 9px;
-  background: #34425d;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  padding: 10px;
-  font-size: 12px;
-}
+    .feature h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
 
-.message {
-  padding: 12px;
-  border-radius: 12px;
-  background: #15283a;
-  color: var(--cyan);
-  font-size: 13px;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
-}
+    .feature p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
 
-footer {
-  padding: 22px 10px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-}
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 25px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
 
-@media(max-width: 600px) {
-  .voice-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .card { padding: 14px; }
-  h1 { font-size: 24px; }
-}
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(7px);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-@media(max-width: 350px) {
-  .voice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-</style>
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 410px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .modal-box h2 {
+      font-size: 23px;
+      margin-bottom: 9px;
+    }
+
+    .modal-box p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 2;
+      margin-bottom: 22px;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 13px;
+      background: white;
+      color: #222;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .status {
+      font-size: 13px;
+      margin-top: 15px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .status.error {
+      color: #ff8e9b;
+    }
+
+    .status.success {
+      color: #85e3b0;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 850px) {
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        padding: 38px 25px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav {
+        padding: 13px 15px;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      .nav-actions .btn {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      main {
+        padding: 22px 14px 45px;
+      }
+
+      .hero {
+        padding: 30px 20px;
+      }
+
+      .search-row {
+        flex-direction: column;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .products {
+        gap: 10px;
+      }
+
+      .product-card img {
+        height: 135px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <header class="topbar">
+    <nav class="nav">
+      <div class="brand">NEXO<span>RA</span></div>
 
-<header>
-  <div class="logo">🎙️</div>
-  <h1>لازم تغيّر صوتك</h1>
-  <p>اختار صوتك الجديد وتحكم بالتفاصيل</p>
-</header>
+      <div class="nav-actions">
+        <div id="userArea" class="user-area hidden">
+          <span id="userName"></span>
+          <button class="btn" id="logoutBtn">تسجيل الخروج</button>
+        </div>
 
-<main>
-
-  <section class="card">
-    <div class="status">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">جاري تجهيز معالج الصوت...</span>
-    </div>
-
-    <h2 class="title">🎭 الشخصيات الصوتية</h2>
-    <div class="voice-grid" id="voiceGrid"></div>
-
-    <p class="note">
-      الأنماط تغير طبقة الصوت والمؤثرات. تغيير الطبقة لا يحول الصوت
-      وحده إلى هوية صوتية بشرية مطابقة.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2 class="title">🎚️ إعدادات الصوت</h2>
-
-    <div class="control">
-      <div class="label-row">
-        <label for="pitch">طبقة الصوت الحقيقية</label>
-        <output id="pitchOut">1.00x</output>
+        <button class="btn btn-primary" id="loginBtn">
+          تسجيل الدخول
+        </button>
       </div>
-      <input id="pitch" type="range"
-        min="0.60" max="1.80" step="0.01" value="1">
-    </div>
+    </nav>
+  </header>
 
-    <div class="control">
-      <div class="label-row">
-        <label for="depth">عمق الصوت</label>
-        <output id="depthOut">50%</output>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">NEXORA STORE</div>
+
+        <h1>
+          اكتشف تجربة تسوق<br>
+          <span>مختلفة تماماً</span>
+        </h1>
+
+        <p>
+          مكانك لاكتشاف المنتجات والتسوق بسهولة.
+          تصفح المتجر وتابع جديد المنتجات عند إضافتها.
+        </p>
+
+        <div class="search-row">
+          <input
+            id="searchInput"
+            class="search"
+            type="search"
+            placeholder="ابحث عن منتج..."
+            aria-label="البحث عن منتج"
+          >
+          <button class="btn btn-primary" id="searchBtn">
+            بحث
+          </button>
+        </div>
       </div>
-      <input id="depth" type="range"
-        min="0" max="100" value="50">
-    </div>
+    </section>
 
-    <div class="control">
-      <div class="label-row">
-        <label for="echo">الصدى</label>
-        <output id="echoOut">15%</output>
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>المنتجات</h2>
+          <p>المنتجات المتوفرة في المتجر</p>
+        </div>
       </div>
-      <input id="echo" type="range"
-        min="0" max="100" value="15">
-    </div>
 
-    <div class="control">
-      <div class="label-row">
-        <label for="distortion">التشويه الإلكتروني</label>
-        <output id="distortionOut">0%</output>
+      <div id="products" class="products">
+        <div class="empty">
+          <div class="empty-line"></div>
+          <h3>المتجر جاهز لاستقبال منتجاته</h3>
+          <p>
+            لا توجد منتجات مضافة حالياً.<br>
+            ستظهر المنتجات هنا بعد إضافتها إلى قاعدة البيانات.
+          </p>
+        </div>
       </div>
-      <input id="distortion" type="range"
-        min="0" max="100" value="0">
-    </div>
+    </section>
 
-    <div class="control">
-      <div class="label-row">
-        <label for="volume">مستوى الصوت</label>
-        <output id="volumeOut">80%</output>
-      </div>
-      <input id="volume" type="range"
-        min="0" max="100" value="80">
-    </div>
+    <section class="features">
+      <article class="feature">
+        <h3>تجربة سهلة</h3>
+        <p>واجهة واضحة ومتوافقة مع الهاتف والكمبيوتر.</p>
+      </article>
 
-    <div class="control">
-      <label for="space">المؤثر المكاني</label>
-      <select id="space">
-        <option value="0">بدون صدى إضافي</option>
-        <option value="0.15">غرفة صغيرة</option>
-        <option value="0.35">قاعة كبيرة</option>
-        <option value="0.55">كهف</option>
-        <option value="0.7">فضاء</option>
-      </select>
-    </div>
+      <article class="feature">
+        <h3>حسابك الشخصي</h3>
+        <p>تسجيل دخول بحساب Google بعد تفعيل الخدمة.</p>
+      </article>
 
-    <button class="btn secondary full" id="reset">
-      ↺ إعادة ضبط الإعدادات
-    </button>
-  </section>
+      <article class="feature">
+        <h3>منتجات قابلة للإضافة</h3>
+        <p>يمكن ربط واجهة المنتجات بقاعدة بيانات Firebase.</p>
+      </article>
+    </section>
+  </main>
 
-  <section class="card">
-    <h2 class="title">🎤 الميكروفون المباشر</h2>
+  <footer>
+    NEXORA STORE — جميع الحقوق محفوظة
+  </footer>
 
-    <div class="recording" id="recordingIndicator" hidden>
-      🔴 جاري تسجيل الصوت المعالج
-    </div>
+  <div id="loginModal" class="modal">
+    <div class="modal-box">
+      <h2>تسجيل الدخول</h2>
+      <p>
+        سجّل الدخول باستخدام حساب Google للوصول إلى حسابك.
+      </p>
 
-    <div class="buttons">
-      <button class="btn primary" id="startMic">
-        🎙️ تشغيل الميكروفون
+      <button id="googleBtn" class="google-btn">
+        المتابعة باستخدام Google
       </button>
-      <button class="btn stop" id="stopMic">
-        ⏹️ إيقاف الميكروفون
-      </button>
-      <button class="btn primary" id="startRecord">
-        🔴 بدء التسجيل
-      </button>
-      <button class="btn secondary" id="stopRecord">
-        إنهاء التسجيل
+
+      <div id="loginStatus" class="status"></div>
+
+      <button id="closeModal" class="btn close-btn">
+        إغلاق
       </button>
     </div>
-
-    <p class="note">
-      عند تشغيل الميكروفون ستسمع الصوت بعد المعالجة من خلال السماعات.
-      استخدم سماعات رأس لتقليل رجوع الصوت إلى الميكروفون.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2 class="title">📂 رفع ملف صوتي</h2>
-
-    <input id="audioFile" type="file" accept="audio/*">
-
-    <audio id="filePlayer" controls hidden></audio>
-
-    <div class="buttons" style="margin-top:12px">
-      <button class="btn primary" id="playFile">
-        ▶️ تشغيل بالمؤثرات
-      </button>
-      <button class="btn secondary" id="stopFile">
-        ⏹️ إيقاف الملف
-      </button>
-    </div>
-
-    <p class="note">
-      تقدر تشغل الملف وتسمع النتيجة. لتصدير النتيجة، ابدأ التسجيل
-      أثناء تشغيل الملف، ثم أنهِ التسجيل ونزّل الصوت الناتج.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2 class="title">💾 تسجيلاتي</h2>
-    <div id="library">
-      <p class="note">ماكو تسجيلات بهذه الجلسة حالياً.</p>
-    </div>
-    <button class="btn stop full" id="clearLibrary">
-      🗑️ حذف التسجيلات
-    </button>
-  </section>
-
-  <section class="card">
-    <h2 class="title">ℹ️ حالة النظام</h2>
-    <div class="message" id="systemMessage">
-      اضغط تشغيل الميكروفون للبدء.
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  لازم تغيّر صوتك · معالجة الصوت داخل المتصفح
-</footer>
-
-<script type="module">
-import {
-  SoundTouchNode
-} from "https://esm.sh/@soundtouchjs/audio-worklet@2.1.1";
-
-const $ = id => document.getElementById(id);
-
-const voices = [
-  {id:"normal", name:"طبيعي", icon:"🎤", pitch:1.00, depth:50, echo:0, dist:0},
-  {id:"girl", name:"بنت ناعم", icon:"👩", pitch:1.38, depth:30, echo:8, dist:0},
-  {id:"boy", name:"ولد", icon:"👦", pitch:1.20, depth:40, echo:4, dist:0},
-  {id:"deep", name:"رجل عميق", icon:"🧔", pitch:0.78, depth:82, echo:8, dist:0},
-  {id:"horror", name:"مرعب", icon:"👹", pitch:0.66, depth:95, echo:70, dist:15},
-  {id:"robot", name:"روبوت", icon:"🤖", pitch:0.92, depth:50, echo:10, dist:70},
-  {id:"alien", name:"فضائي", icon:"👽", pitch:1.48, depth:35, echo:60, dist:35},
-  {id:"ghost", name:"شبح", icon:"👻", pitch:1.15, depth:45, echo:85, dist:8},
-  {id:"radio", name:"راديو", icon:"📻", pitch:1.00, depth:60, echo:5, dist:30},
-  {id:"game", name:"ألعاب", icon:"🎮", pitch:1.28, depth:40, echo:15, dist:15},
-  {id:"cartoon", name:"كرتوني", icon:"🐿️", pitch:1.65, depth:20, echo:5, dist:5},
-  {id:"villain", name:"شرير", icon:"🦇", pitch:0.72, depth:90, echo:48, dist:18},
-  {id:"water", name:"مائي", icon:"🌊", pitch:1.08, depth:45, echo:40, dist:25},
-  {id:"metal", name:"معدني", icon:"🔩", pitch:0.90, depth:65, echo:20, dist:65},
-  {id:"cinema", name:"سينمائي", icon:"🎬", pitch:0.92, depth:65, echo:28, dist:0},
-  {id:"giant", name:"عملاق", icon:"🐻", pitch:0.68, depth:100, echo:12, dist:0}
-];
-
-let ctx = null;
-let processor = null;
-let micStream = null;
-let micSource = null;
-let fileSource = null;
-let currentFileUrl = null;
-let recorder = null;
-let chunks = [];
-let recordings = [];
-let micActive = false;
-let fileConnected = false;
-let selectedVoice = "normal";
-let outputDestination = null;
-
-const state = {
-  ready: false,
-  recording: false
-};
-
-function showMessage(text) {
-  $("systemMessage").textContent = text;
-}
-
-function setStatus(text, active = false) {
-  $("statusText").textContent = text;
-  $("statusDot").classList.toggle("on", active);
-}
-
-function buildVoiceButtons() {
-  const grid = $("voiceGrid");
-  grid.innerHTML = "";
-
-  for (const voice of voices) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className =
-      "voice" + (voice.id === selectedVoice ? " selected" : "");
-
-    button.innerHTML =
-      `<span class="emoji">${voice.icon}</span>` +
-      `<span class="name">${voice.name}</span>`;
-
-    button.addEventListener("click", () => {
-      selectedVoice = voice.id;
-
-      $("pitch").value = voice.pitch;
-      $("depth").value = voice.depth;
-      $("echo").value = voice.echo;
-      $("distortion").value = voice.dist;
-
-      buildVoiceButtons();
-      updateSettings();
-    });
-
-    grid.appendChild(button);
-  }
-}
-
-function updateOutputs() {
-  $("pitchOut").textContent =
-    Number($("pitch").value).toFixed(2) + "x";
-
-  for (const id of ["depth", "echo", "distortion", "volume"]) {
-    $(id + "Out").textContent = $(id).value + "%";
-  }
-}
-
-function makeDistortion(amount) {
-  const curve = new Float32Array(44100);
-  const k = amount * 80;
-
-  for (let i = 0; i < curve.length; i++) {
-    const x = (i * 2 / (curve.length - 1)) - 1;
-    curve[i] = k === 0
-      ? x
-      : ((3 + k) * x * 20 * Math.PI / 180) /
-        (Math.PI + k * Math.abs(x));
-  }
-
-  return curve;
-}
-
-async function initializeAudio() {
-  if (ctx) {
-    if (ctx.state === "suspended") await ctx.resume();
-    return;
-  }
-
-  const AudioContextClass =
-    window.AudioContext || window.webkitAudioContext;
-
-  if (!AudioContextClass) {
-    throw new Error("المتصفح لا يدعم Web Audio API.");
-  }
-
-  ctx = new AudioContextClass();
-
-  /*
-   * مكتبة SoundTouchJS تحتاج ملف AudioWorklet منفصلاً.
-   * نستدعي نسخة المعالج المنشورة على jsDelivr.
-   */
-  const processorUrl =
-    "https://cdn.jsdelivr.net/npm/@soundtouchjs/audio-worklet@2.1.1/.dist/soundtouch-processor.js";
-
-  await SoundTouchNode.register(ctx, processorUrl);
-
-  processor = new SoundTouchNode({ context: ctx });
-
-  const toneFilter = ctx.createBiquadFilter();
-  toneFilter.type = "lowpass";
-  toneFilter.frequency.value = 18000;
-
-  const dry = ctx.createGain();
-  const delay = ctx.createDelay(2);
-  const feedback = ctx.createGain();
-  const wet = ctx.createGain();
-
-  const distortion = ctx.createWaveShaper();
-  distortion.oversample = "4x";
-
-  const master = ctx.createGain();
-
-  processor.connect(toneFilter);
-  toneFilter.connect(distortion);
-
-  distortion.connect(dry);
-  dry.connect(master);
-
-  distortion.connect(delay);
-  delay.connect(feedback);
-  feedback.connect(delay);
-  delay.connect(wet);
-  wet.connect(master);
-
-  master.connect(ctx.destination);
-
-  outputDestination = ctx.createMediaStreamDestination();
-  master.connect(outputDestination);
-
-  ctx._voiceNodes = {
-    toneFilter, dry, delay, feedback, wet, distortion, master
-  };
-
-  state.ready = true;
-  updateSettings();
-
-  setStatus("معالج تغيير طبقة الصوت جاهز", true);
-  showMessage("تم تحميل معالج تغيير طبقة الصوت.");
-}
-
-function updateSettings() {
-  updateOutputs();
-  if (!ctx || !processor) return;
-
-  const pitch = Number($("pitch").value);
-  const depth = Number($("depth").value) / 100;
-  const echo = Number($("echo").value) / 100;
-  const dist = Number($("distortion").value) / 100;
-  const volume = Number($("volume").value) / 100;
-  const space = Number($("space").value);
-
-  /*
-   * هذا هو تغيير الطبقة الفعلي عبر SoundTouchJS.
-   * القيمة 1 = الطبقة الأصلية.
-   * أكبر من 1 = طبقة أعلى.
-   * أقل من 1 = طبقة أخفض.
-   */
-  processor.pitch.setTargetAtTime
-    ? processor.pitch.setTargetAtTime(pitch, ctx.currentTime, 0.04)
-    : processor.pitch.setValueAtTime(pitch, ctx.currentTime);
-
-  const n = ctx._voiceNodes;
-
-  n.toneFilter.frequency.setTargetAtTime(
-    18000 - depth * 14000,
-    ctx.currentTime,
-    0.05
-  );
-
-  n.toneFilter.Q.setTargetAtTime(
-    0.7 + depth * 3,
-    ctx.currentTime,
-    0.05
-  );
-
-  if (selectedVoice === "radio") {
-    n.toneFilter.type = "bandpass";
-    n.toneFilter.frequency.setTargetAtTime(1700, ctx.currentTime, 0.05);
-  } else {
-    n.toneFilter.type = "lowpass";
-  }
-
-  n.distortion.curve = makeDistortion(dist);
-  n.delay.delayTime.setTargetAtTime(
-    0.10 + space * 0.5,
-    ctx.currentTime,
-    0.05
-  );
-
-  n.feedback.gain.setTargetAtTime(
-    Math.min(0.65, echo * 0.45),
-    ctx.currentTime,
-    0.05
-  );
-
-  n.wet.gain.setTargetAtTime(
-    Math.min(0.8, echo * 0.5 + space * 0.25),
-    ctx.currentTime,
-    0.05
-  );
-
-  n.dry.gain.setTargetAtTime(
-    1 - echo * 0.35,
-    ctx.currentTime,
-    0.05
-  );
-
-  n.master.gain.setTargetAtTime(
-    volume,
-    ctx.currentTime,
-    0.05
-  );
-}
-
-async function startMic() {
-  try {
-    await initializeAudio();
-
-    if (micActive) return;
-
-    micStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false
-      }
-    });
-
-    micSource = ctx.createMediaStreamSource(micStream);
-    micSource.connect(processor);
-
-    micActive = true;
-    setStatus("الميكروفون يعمل", true);
-    showMessage("الصوت يدخل إلى معالج تغيير الطبقة.");
-
-  } catch (error) {
-    setStatus("تعذر تشغيل الميكروفون");
-    showMessage(error.message);
-
-    alert(
-      "تعذر تشغيل الميكروفون.\n" +
-      "تأكد من السماح بالوصول إليه ومن اتصال الإنترنت.\n\n" +
-      error.message
-    );
-  }
-}
-
-function stopMic() {
-  if (micSource) {
-    try { micSource.disconnect(); } catch (_) {}
-    micSource = null;
-  }
-
-  if (micStream) {
-    micStream.getTracks().forEach(track => track.stop());
-    micStream = null;
-  }
-
-  micActive = false;
-  setStatus("الميكروفون متوقف");
-  showMessage("تم إيقاف الميكروفون.");
-}
-
-async function playFile() {
-  try {
-    await initializeAudio();
-
-    const file = $("audioFile").files[0];
-
-    if (!file) {
-      alert("اختار ملفاً صوتياً أولاً.");
-      return;
-    }
-
-    const player = $("filePlayer");
-
-    if (currentFileUrl) URL.revokeObjectURL(currentFileUrl);
-    currentFileUrl = URL.createObjectURL(file);
-    player.src = currentFileUrl;
-    player.hidden = false;
+  </div>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged
+    } from
+      "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    import {
+      getDatabase,
+      ref,
+      onValue
+    } from
+      "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
     /*
-     * إنشاء MediaElementSource مرة واحدة لكل عنصر.
-     * نعيد استخدام المصدر عند اختيار ملف جديد.
-     */
-    if (!fileConnected) {
-      fileSource = ctx.createMediaElementSource(player);
-      fileSource.connect(processor);
-      fileConnected = true;
-    }
+      استبدل إعدادات Firebase أدناه بإعدادات مشروعك.
+      لا تضع توكن بوت تيليجرام أو أي مفتاح سري هنا.
+    */
 
-    await player.play();
-    showMessage("يتم تشغيل الملف عبر معالج الصوت.");
-  } catch (error) {
-    alert("تعذر تشغيل الملف: " + error.message);
-  }
-}
-
-function stopFile() {
-  $("filePlayer").pause();
-  $("filePlayer").currentTime = 0;
-  showMessage("تم إيقاف الملف الصوتي.");
-}
-
-function addRecording(blob, name) {
-  const url = URL.createObjectURL(blob);
-  recordings.push({ blob, url, name });
-  renderLibrary();
-}
-
-function renderLibrary() {
-  const library = $("library");
-  library.innerHTML = "";
-
-  if (!recordings.length) {
-    library.innerHTML =
-      '<p class="note">ماكو تسجيلات بهذه الجلسة.</p>';
-    return;
-  }
-
-  recordings.forEach((item, index) => {
-    const box = document.createElement("div");
-    box.className = "record-item";
-
-    const title = document.createElement("strong");
-    title.textContent = item.name;
-
-    const audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = item.url;
-
-    const actions = document.createElement("div");
-    actions.className = "record-actions";
-
-    const download = document.createElement("a");
-    download.href = item.url;
-    download.download = item.name;
-    download.textContent = "⬇️ تنزيل";
-
-    const remove = document.createElement("button");
-    remove.textContent = "🗑️ حذف";
-
-    remove.onclick = () => {
-      URL.revokeObjectURL(item.url);
-      recordings.splice(index, 1);
-      renderLibrary();
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.firebasestorage.app",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
-    actions.append(download, remove);
-    box.append(title, audio, actions);
-    library.appendChild(box);
-  });
-}
+    const loginModal = document.getElementById("loginModal");
+    const loginBtn = document.getElementById("loginBtn");
+    const googleBtn = document.getElementById("googleBtn");
+    const closeModal = document.getElementById("closeModal");
+    const loginStatus = document.getElementById("loginStatus");
+    const userArea = document.getElementById("userArea");
+    const userName = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const productsElement = document.getElementById("products");
+    const searchInput = document.getElementById("searchInput");
 
-async function startRecording() {
-  try {
-    await initializeAudio();
+    let auth = null;
+    let db = null;
+    let firebaseReady = false;
+    let allProducts = [];
 
-    if (!window.MediaRecorder) {
-      throw new Error("المتصفح لا يدعم تسجيل الصوت.");
+    function showStatus(message, type = "") {
+      loginStatus.textContent = message;
+      loginStatus.className = "status " + type;
     }
 
-    if (recorder && recorder.state === "recording") return;
+    loginBtn.addEventListener("click", () => {
+      loginModal.classList.add("open");
+    });
 
-    chunks = [];
+    closeModal.addEventListener("click", () => {
+      loginModal.classList.remove("open");
+    });
 
-    const stream = outputDestination.stream;
-
-    let options = {};
-
-    if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
-      options.mimeType = "audio/webm;codecs=opus";
-    }
-
-    recorder = new MediaRecorder(stream, options);
-
-    recorder.ondataavailable = event => {
-      if (event.data && event.data.size) {
-        chunks.push(event.data);
+    loginModal.addEventListener("click", event => {
+      if (event.target === loginModal) {
+        loginModal.classList.remove("open");
       }
-    };
+    });
 
-    recorder.onstop = () => {
-      const type = recorder.mimeType || "audio/webm";
-      const blob = new Blob(chunks, { type });
-
-      if (blob.size > 0) {
-        const extension = type.includes("ogg") ? "ogg" : "webm";
-        addRecording(blob, "voice-" + Date.now() + "." + extension);
-        showMessage("تم حفظ التسجيل المعالج مؤقتاً.");
+    try {
+      if (
+        firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY" ||
+        firebaseConfig.projectId === "YOUR_PROJECT"
+      ) {
+        throw new Error("لم تتم إضافة إعدادات Firebase بعد.");
       }
 
-      $("recordingIndicator").hidden = true;
-    };
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getDatabase(app);
+      firebaseReady = true;
 
-    recorder.start(250);
-    state.recording = true;
-    $("recordingIndicator").hidden = false;
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: "select_account"
+      });
 
-  } catch (error) {
-    alert("تعذر بدء التسجيل: " + error.message);
-  }
-}
+      googleBtn.addEventListener("click", async () => {
+        googleBtn.disabled = true;
+        showStatus("جارٍ فتح تسجيل الدخول...");
 
-function stopRecording() {
-  if (recorder && recorder.state === "recording") {
-    recorder.stop();
-  }
+        try {
+          await signInWithPopup(auth, provider);
+          showStatus("تم تسجيل الدخول بنجاح.", "success");
+          setTimeout(() => loginModal.classList.remove("open"), 700);
+        } catch (error) {
+          console.error(error);
+          showStatus(
+            error.code === "auth/unauthorized-domain"
+              ? "أضف نطاق الموقع إلى Authorized domains في Firebase."
+              : error.code === "auth/popup-blocked"
+              ? "المتصفح منع نافذة الدخول. اسمح بالنوافذ المنبثقة وحاول مجدداً."
+              : "تعذر تسجيل الدخول. تحقق من إعدادات Firebase وGoogle Authentication.",
+            "error"
+          );
+        } finally {
+          googleBtn.disabled = false;
+        }
+      });
 
-  state.recording = false;
-  $("recordingIndicator").hidden = true;
-}
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          loginBtn.classList.add("hidden");
+          userArea.classList.remove("hidden");
+          userName.textContent = user.displayName || user.email || "المستخدم";
+        } else {
+          loginBtn.classList.remove("hidden");
+          userArea.classList.add("hidden");
+          userName.textContent = "";
+        }
+      });
 
-function resetSettings() {
-  selectedVoice = "normal";
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+        } catch (error) {
+          console.error(error);
+          alert("تعذر تسجيل الخروج.");
+        }
+      });
 
-  $("pitch").value = 1;
-  $("depth").value = 50;
-  $("echo").value = 15;
-  $("distortion").value = 0;
-  $("volume").value = 80;
-  $("space").value = 0;
+      /*
+        قراءة المنتجات من المسار products.
+        القاعدة فارغة؟ سيظهر تنبيه عدم وجود منتجات.
+      */
+      onValue(ref(db, "products"), snapshot => {
+        const data = snapshot.val() || {};
 
-  buildVoiceButtons();
-  updateSettings();
-}
+        allProducts = Object.entries(data).map(([id, item]) => ({
+          id,
+          ...item
+        }));
 
-$("startMic").addEventListener("click", startMic);
-$("stopMic").addEventListener("click", stopMic);
-$("startRecord").addEventListener("click", startRecording);
-$("stopRecord").addEventListener("click", stopRecording);
-$("playFile").addEventListener("click", playFile);
-$("stopFile").addEventListener("click", stopFile);
-$("reset").addEventListener("click", resetSettings);
+        renderProducts(allProducts);
+      }, error => {
+        console.error("Firebase products error:", error);
+        productsElement.textContent =
+          "تعذر تحميل المنتجات. تحقق من قواعد قراءة قاعدة البيانات.";
+      });
 
-for (const id of [
-  "pitch", "depth", "echo", "distortion", "volume", "space"
-]) {
-  $(id).addEventListener("input", updateSettings);
-  $(id).addEventListener("change", updateSettings);
-}
+    } catch (error) {
+      console.warn(error.message);
+      googleBtn.addEventListener("click", () => {
+        showStatus(
+          "يجب وضع إعدادات Firebase الصحيحة وتفعيل Google Authentication أولاً.",
+          "error"
+        );
+      });
+    }
 
-$("clearLibrary").addEventListener("click", () => {
-  for (const item of recordings) {
-    URL.revokeObjectURL(item.url);
-  }
+    function renderProducts(products) {
+      productsElement.replaceChildren();
 
-  recordings = [];
-  renderLibrary();
-});
+      if (!products.length) {
+        const box = document.createElement("div");
+        box.className = "empty";
 
-window.addEventListener("beforeunload", () => {
-  if (micStream) {
-    micStream.getTracks().forEach(track => track.stop());
-  }
+        const line = document.createElement("div");
+        line.className = "empty-line";
 
-  if (currentFileUrl) URL.revokeObjectURL(currentFileUrl);
-});
+        const title = document.createElement("h3");
+        title.textContent = "لا توجد منتجات حالياً";
 
-buildVoiceButtons();
-updateOutputs();
-</script>
+        const description = document.createElement("p");
+        description.textContent =
+          "ستظهر المنتجات هنا عند إضافتها إلى قاعدة البيانات.";
 
+        box.append(line, title, description);
+        productsElement.appendChild(box);
+        return;
+      }
+
+      for (const product of products) {
+        const card = document.createElement("article");
+        card.className = "product-card";
+
+        if (product.image) {
+          const image = document.createElement("img");
+          image.src = product.image;
+          image.alt = product.name || "منتج";
+          image.loading = "lazy";
+          image.onerror = () => image.remove();
+          card.appendChild(image);
+        }
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+
+        const title = document.createElement("h3");
+        title.textContent = product.name || "منتج جديد";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent =
+          Number.isFinite(Number(product.price))
+            ? Number(product.price).toLocaleString("ar-IQ") + " د.ع"
+            : "السعر غير محدد";
+
+        info.append(title, price);
+        card.appendChild(info);
+        productsElement.appendChild(card);
+      }
+    }
+
+    function searchProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      renderProducts(
+        allProducts.filter(product =>
+          String(product.name || "").toLowerCase().includes(query)
+        )
+      );
+    }
+
+    document.getElementById("searchBtn")
+      .addEventListener("click", searchProducts);
+
+    searchInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") searchProducts();
+    });
+  </script>
 </body>
 </html>
