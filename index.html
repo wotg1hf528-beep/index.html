@@ -6,8 +6,14 @@
 <meta name="theme-color" content="#5b3df5">
 <title>متجر GBN — سوق المنتجات من المستخدمين</title>
 <meta name="description" content="متجر GBN: منصة يعرض فيها المستخدمون منتجاتهم ويتواصلون مع المشترين مباشرة.">
-<!-- AdSense: استبدل ca-pub-XXXXXXXXXXXXXXXX برقم الناشر الحقيقي -->
-<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX">
+<!-- Google AdSense -->
+<meta name="google-adsense-account" content="ca-pub-6012487976916373">
+<script>
+  // قبل موافقة الزائر على الكوكيز: إعلانات غير مخصصة فقط
+  window.adsbygoogle = window.adsbygoogle || [];
+  try { if (localStorage.getItem("gbn_consent") !== "all") window.adsbygoogle.requestNonPersonalizedAds = 1; } catch (e) { window.adsbygoogle.requestNonPersonalizedAds = 1; }
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6012487976916373" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -363,7 +369,8 @@ const firebaseConfig = {
 };
 const ADMIN_EMAIL   = "wtg1hf528@gmail.com";   // المشرف (نفس الإيميل في firestore.rules)
 const CONTACT_EMAIL = "wtg1hf528@gmail.com";
-const ADS = { client: "ca-pub-XXXXXXXXXXXXXXXX", slotTop: "0000000000", slotFeed: "1111111111" };
+// ضع أرقام وحدات الإعلان (Ad unit IDs) من لوحة AdSense ← Ads ← By ad unit. اتركها "" لتعطيل الوحدة.
+const ADS = { client: "ca-pub-6012487976916373", slotTop: "", slotFeed: "" };
 const DONATE = {
   paypal: "https://www.paypal.me/YOURNAME",
   amounts: [1, 3, 5, 10],
@@ -493,7 +500,7 @@ function card(p, mine){
              : own ? "" : `<div class="row"><button class="btn sm" data-order="${p.id}">اطلب الآن</button></div>`}
     </div></div>`;
 }
-const adSlot = slot => adsEnabled ? `<div class="adwrap"><small>إعلان</small><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${slot}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>` : "";
+const adSlot = slot => (adsEnabled && slot) ? `<div class="adwrap"><small>إعلان</small><ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${slot}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>` : "";
 
 function renderGrid(el, list, mine){
   if (!list.length){
@@ -714,11 +721,8 @@ function initAds(){
   adsLoaded = true;
   window.adsbygoogle = window.adsbygoogle || [];
   if (consent() !== "all") window.adsbygoogle.requestNonPersonalizedAds = 1;
-  const s = document.createElement("script");
-  s.async = true; s.crossOrigin = "anonymous";
-  s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + ADS.client;
-  document.head.appendChild(s);
-  $("adTop").insertAdjacentHTML("beforeend", `<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS.slotTop}" data-ad-format="auto" data-full-width-responsive="true"></ins>`);
+  // سكربت AdSense محمّل أصلاً في <head>
+  if (ADS.slotTop) $("adTop").insertAdjacentHTML("beforeend", `<ins class="adsbygoogle" style="display:block" data-ad-client="${ADS.client}" data-ad-slot="${ADS.slotTop}" data-ad-format="auto" data-full-width-responsive="true"></ins>`);
   document.body.classList.add("ads-on"); pushAds();
 }
 function pushAds(){
