@@ -1,118 +1,234 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرك عبدالله لبرمجة الألعاب</title>
-    <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0b0f19; color: #e2e8f0; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        header { background: #111827; padding: 15px; text-align: center; border-bottom: 2px solid #6366f1; font-weight: bold; font-size: 1.1rem; color: #818cf8; }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 14px; }
-        .msg { max-width: 90%; padding: 12px 16px; border-radius: 12px; line-height: 1.6; word-wrap: break-word; font-size: 0.95rem; }
-        .user { background: #4f46e5; color: white; align-self: flex-start; border-bottom-right-radius: 2px; }
-        .bot { background: #1e293b; color: #f8fafc; align-self: flex-end; border: 1px solid #334155; border-bottom-left-radius: 2px; width: 100%; }
-        .code-container { position: relative; margin-top: 10px; margin-bottom: 10px; }
-        .copy-btn { position: absolute; top: 6px; right: 6px; background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 4px 10px; border-radius: 5px; font-size: 0.75rem; cursor: pointer; }
-        pre { background: #000000; padding: 32px 12px 12px 12px; border-radius: 8px; overflow-x: auto; direction: ltr; text-align: left; color: #10b981; border: 1px solid #334155; font-family: monospace; margin: 0; font-size: 0.85rem; }
-        .input-area { display: flex; padding: 12px; background: #111827; gap: 8px; border-top: 1px solid #1e293b; }
-        input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; outline: none; font-size: 1rem; }
-        button#send-btn { padding: 12px 20px; border-radius: 8px; border: none; background: #6366f1; color: white; font-weight: bold; cursor: pointer; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b25">
+<title>NEXORA REMIND</title>
+<style>
+:root {
+ --bg:#091611;--card:#12251d;--green:#83e2a6;
+ --text:#f4fff7;--muted:#a7b9ae;--line:#294638;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:22px;background:#102b20;
+ border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-size:22px;font-weight:bold;color:var(--green)}
+main{max-width:700px;margin:auto;padding:15px}
+.hero{
+ background:linear-gradient(135deg,#194532,#10241c);
+ padding:25px;border-radius:22px;margin:12px 0;
+}
+h1{font-size:27px;margin:10px 0}
+p{color:var(--muted);line-height:1.7}
+.card{
+ background:var(--card);padding:18px;
+ border:1px solid var(--line);
+ border-radius:17px;margin:14px 0;
+}
+h2{font-size:18px}
+input,select{
+ width:100%;padding:13px;margin:7px 0;
+ border-radius:10px;border:1px solid var(--line);
+ background:#091811;color:white;
+}
+button{
+ padding:12px 15px;border:0;border-radius:10px;
+ background:var(--green);color:#092016;
+ font-weight:bold;cursor:pointer;
+}
+.secondary{background:#294638;color:white}
+.delete{background:#542c2c;color:white}
+.item{
+ display:flex;align-items:center;gap:10px;
+ padding:12px 0;border-bottom:1px solid var(--line);
+}
+.item span{flex:1}
+.item input{width:auto}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#10251d;display:flex;
+ justify-content:space-around;padding:10px;
+ border-top:1px solid var(--line);
+}
+nav button{background:transparent;color:white;font-size:12px}
+.page{display:none;padding-bottom:75px}
+.page.active{display:block}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#091811;padding:14px;border-radius:12px}
+.stat b{font-size:22px;color:var(--green)}
+</style>
 </head>
 <body>
 
-<header>⚡ محرك عبدالله الخارق لبرمجة الألعاب ⚡</header>
+<header>
+ <div>
+  <div class="logo">NEXORA</div>
+  <small>REMIND SMART SYSTEM</small>
+ </div>
+ <span>🟢 متصل بالتطبيق</span>
+</header>
 
-<div id="chat-box">
-    <div class="msg bot">أهلاً بك! اطلب مني أي لعبة ويب كاملة أو سكربت وسأكتبه لك من الصفر.</div>
-</div>
+<main>
+<section id="home" class="page active">
+ <div class="hero">
+  <small style="color:#83e2a6">NEXORA LABS</small>
+  <h1>لا تنسى أي شيء بعد اليوم.</h1>
+  <p>مساعدك الذكي لتذكّر أغراضك ومهامك اليومية.</p>
+  <div class="stats">
+   <div class="stat"><b id="count">0</b><br>الأغراض</div>
+   <div class="stat"><b id="tasksCount">0</b><br>المهام</div>
+  </div>
+ </div>
 
-<div class="input-area">
-    <input type="text" id="user-input" placeholder="اكتب فكرة اللعبة أو السكربت هنا..." onkeypress="if(event.key === 'Enter') sendMessage()" />
-    <button id="send-btn" onclick="sendMessage()">إرسال</button>
-</div>
+ <div class="card">
+  <h2>🚪 فحص قبل المغادرة</h2>
+  <div id="checklist"></div>
+  <button onclick="checkExit()" style="width:100%">فحص أغراضي</button>
+ </div>
+</section>
+
+<section id="items" class="page">
+ <div class="card">
+  <h2>🎒 أغراضي</h2>
+  <input id="itemInput" placeholder="اسم الغرض">
+  <button onclick="addItem()">إضافة غرض</button>
+  <div id="itemsList"></div>
+ </div>
+</section>
+
+<section id="tasks" class="page">
+ <div class="card">
+  <h2>📅 المهام اليومية</h2>
+  <input id="taskInput" placeholder="اكتب المهمة">
+  <input id="taskTime" type="datetime-local">
+  <button onclick="addTask()">إضافة مهمة</button>
+  <div id="tasksList"></div>
+ </div>
+</section>
+
+<section id="device" class="page">
+ <div class="card">
+  <h2>📡 جهاز NEXORA</h2>
+  <p id="deviceStatus">الجهاز غير متصل</p>
+  <button onclick="connectBluetooth()">ربط Bluetooth</button>
+  <button class="secondary" onclick="alarm()">تجربة التنبيه</button>
+  <p>ربط الجهاز الحقيقي يحتاج ESP32-C3 وبرمجته بنفس إعدادات التطبيق.</p>
+ </div>
+</section>
+
+<section id="settings" class="page">
+ <div class="card">
+  <h2>⚙️ الإعدادات</h2>
+  <input id="username" placeholder="اسم المستخدم">
+  <button onclick="saveName()">حفظ الاسم</button>
+  <p>NEXORA REMIND v1.0</p>
+  <p>جميع البيانات تحفظ محلياً على جهازك.</p>
+ </div>
+</section>
+</main>
+
+<nav>
+ <button onclick="show('home')">الرئيسية</button>
+ <button onclick="show('items')">الأغراض</button>
+ <button onclick="show('tasks')">المهام</button>
+ <button onclick="show('device')">الجهاز</button>
+ <button onclick="show('settings')">الإعدادات</button>
+</nav>
 
 <script>
-// المفتاح والرابط بترميز Base64 لتجنب حظر المستودع
-const _k = atob("c2stb3ItdjEtNGY2YWQzODdjOGQ1MjM3YTAxNGViY2M4NDllMWMwMGZjODQxNjZlMjE1NjI4N2M0ZDQxY2M3ZDE0OThlNjQ3Nw==");
-const _u = atob("aHR0cHM6Ly9vcGVucm91dGVyLmFpL2FwaS92MS9jaGF0L2NvbXBsZXRpb25z");
-const _m = atob("Y29nbml0aXZlY29tcHV0YXRpb25zL2RvbHBoaW4zLjAtcjEtbWlzdHJhbC0yNGI6ZnJlZQ==");
+const get=(k,d)=>JSON.parse(localStorage.getItem(k)||JSON.stringify(d));
+let items=get('nx_items',[
+ {name:'المفاتيح',done:false},
+ {name:'المحفظة',done:false},
+ {name:'الحقيبة',done:false}
+]);
+let tasks=get('nx_tasks',[]);
 
-const SYSTEM_RULES = `
-أنت نموذج ذكاء اصطناعي مخصص لبرمجة وتصميم الألعاب والسكربتات.
-1. إذا سألك أي شخص من أنت، قل: "أنا محرك ذكاء اصطناعي خاص لبرمجة الألعاب، تم تطويري بواسطة عبدالله".
-2. تخصصك كتابة أكواد ألعاب كاملة وجاهزة للتشغيل (HTML5, CSS, JavaScript, Lua, Python).
-3. اكتب الكود كاملاً دون اختصار.
-`;
-
-let messages = [{ role: "system", content: SYSTEM_RULES }];
-
-async function sendMessage() {
-    const input = document.getElementById("user-input");
-    const text = input.value.trim();
-    if (!text) return;
-
-    appendMessage(text, "user");
-    input.value = "";
-    messages.push({ role: "user", content: text });
-
-    const loadingDiv = appendMessage("جاري كتابة الكود... ⏳", "bot");
-
-    try {
-        const response = await fetch(_u, {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + _k,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: _m,
-                messages: messages
-            })
-        });
-
-        const data = await response.json();
-        if (data.error) {
-            loadingDiv.innerText = "تنبيه: " + data.error.message;
-            return;
-        }
-
-        const reply = data.choices[0].message.content;
-        loadingDiv.innerHTML = formatCode(reply);
-        messages.push({ role: "assistant", content: reply });
-    } catch (error) {
-        loadingDiv.innerText = "حدث خطأ في الاتصال.";
-    }
+function persist(){
+ localStorage.setItem('nx_items',JSON.stringify(items));
+ localStorage.setItem('nx_tasks',JSON.stringify(tasks));
+ render();
 }
-
-function appendMessage(text, type) {
-    const box = document.getElementById("chat-box");
-    const div = document.createElement("div");
-    div.className = "msg " + type;
-    div.innerText = text;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-    return div;
+function show(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
 }
-
-function formatCode(text) {
-    let formatted = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    return formatted.replace(/```(?:\w+)?\n([\s\S]*?)```/g, function(match, code) {
-        return `<div class="code-container">
-                    <button class="copy-btn" onclick="copyCode(this)">نسخ الكود 📋</button>
-                    <pre><code>${code}</code></pre>
-                </div>`;
-    });
+function addItem(){
+ let v=document.getElementById('itemInput').value.trim();
+ if(!v)return;
+ items.push({name:v,done:false});
+ document.getElementById('itemInput').value='';
+ persist();
 }
-
-function copyCode(btn) {
-    const code = btn.nextElementSibling.innerText;
-    navigator.clipboard.writeText(code);
-    btn.innerText = "تم النسخ! ✅";
-    setTimeout(() => btn.innerText = "نسخ الكود 📋", 2000);
+function removeItem(i){items.splice(i,1);persist()}
+function toggle(i){items[i].done=!items[i].done;persist()}
+function addTask(){
+ let v=document.getElementById('taskInput').value.trim();
+ if(!v)return;
+ tasks.push({name:v,time:document.getElementById('taskTime').value,done:false});
+ document.getElementById('taskInput').value='';
+ persist();
 }
+function toggleTask(i){tasks[i].done=!tasks[i].done;persist()}
+function removeTask(i){tasks.splice(i,1);persist()}
+function checkExit(){
+ let missing=items.filter(x=>!x.done);
+ if(!missing.length){alert('كل أغراضك مؤكدة! رحلة موفقة');return}
+ alert('راجع الأغراض التالية:\n'+missing.map(x=>'• '+x.name).join('\n'));
+ alarm();
+}
+function alarm(){
+ try{
+  let c=new AudioContext(),o=c.createOscillator(),g=c.createGain();
+  o.connect(g);g.connect(c.destination);
+  o.frequency.value=850;g.gain.value=.12;
+  o.start();o.stop(c.currentTime+.4);
+ }catch(e){alert('تعذر تشغيل الصوت')}
+}
+async function connectBluetooth(){
+ if(!navigator.bluetooth){
+  alert('Bluetooth غير مدعوم بهذا المتصفح. جرّب Chrome على Android من موقع HTTPS.');
+  return;
+ }
+ try{
+  const device=await navigator.bluetooth.requestDevice({acceptAllDevices:true});
+  await device.gatt.connect();
+  document.getElementById('deviceStatus').textContent='تم الاتصال بالجهاز: '+device.name;
+ }catch(e){alert('لم يتم الاتصال: '+e.message)}
+}
+function saveName(){
+ localStorage.setItem('nx_name',document.getElementById('username').value);
+ alert('تم حفظ الاسم');
+}
+function render(){
+ document.getElementById('count').textContent=items.length;
+ document.getElementById('tasksCount').textContent=tasks.length;
+ let html=items.map((x,i)=>`
+ <div class="item">
+ <input type="checkbox" ${x.done?'checked':''} onchange="toggle(${i})">
+ <span style="${x.done?'text-decoration:line-through':''}">${x.name}</span>
+ <button class="delete" onclick="removeItem(${i})">حذف</button>
+ </div>`).join('');
+ document.getElementById('itemsList').innerHTML=html;
+ document.getElementById('checklist').innerHTML=html;
+ document.getElementById('tasksList').innerHTML=tasks.map((x,i)=>`
+ <div class="item">
+ <input type="checkbox" ${x.done?'checked':''} onchange="toggleTask(${i})">
+ <span>${x.name}<br><small>${x.time||'بدون موعد'}</small></span>
+ <button class="delete" onclick="removeTask(${i})">حذف</button>
+ </div>`).join('');
+}
+document.getElementById('username').value=localStorage.getItem('nx_name')||'';
+render();
 </script>
-
 </body>
 </html>
